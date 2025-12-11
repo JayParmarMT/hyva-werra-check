@@ -1,0 +1,107 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ReCaptcha;
+use Magento\Framework\Escaper;
+use Magento\Newsletter\Block\Subscribe;
+
+/** @var Subscribe $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var ReCaptcha $recaptcha */
+/** @var HeroiconsOutline $heroicons */
+
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaNewsletter module
+$recaptcha = $block->getData('viewModelRecaptcha');
+?>
+<div class="bg-white py-8">
+    <form
+        class="form subscribe container max-w-3xl text-th-primary-darker"
+        action="<?= /* @noEscape */ $escaper->escapeUrl($block->getFormActionUrl()) ?>"
+        method="post"
+        x-data="initFooterNewsletterForm()"
+        @submit.prevent="submitForm()"
+        id="footer-newsletter-validate-detail"
+        aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Subscribe to Newsletter')) ?>"
+    >
+        <div class="text-center text-th-primary-darker space-y-1 mb-6">
+            <p class="text-lg text-th-primary-darker">
+                <strong class="font-medium text-th-primary-darker text-[16px] md:text-[24px]"><?= /* @noEscape */ $escaper->escapeHtml(__('Be the first to know')) ?></strong>
+            </p>
+            <p class="text-th-primary-lighter text-[16px]"><?= /* @noEscape */ $escaper->escapeHtml(__('Subscribe for our best offers.')) ?></p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2">
+            <label class="grow m-0">
+                <span class="sr-only"><?= /* @noEscape */ $escaper->escapeHtml(__('Email Address')) ?></span>
+                 <input
+                    type=""
+                    id="newsletter-subscribe"
+                    name="email"
+                    class="!bg-white !border form-input w-full py-2.5 px-5 !border-2 border-th-primary-slight rounded-md"
+                    required       
+                    placeholder="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Enter your email address')) ?>"
+                >
+                <?= /* @noEscape */ $block->getBlockHtml('formkey') ?>
+                <?= /* @noEscape */ $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
+            </label>
+            <button class="shrink-0 btn btn-primary rounded-lg">
+                <?= /* @noEscape */ $escaper->escapeHtml(__('Subscribe')) ?>
+            </button>
+        </div>
+        <template x-if="displayErrorMessage">
+            <p class="flex items-center text-red mt-2">
+                <?= /* @noEscape */ $heroicons->exclamationCircleHtml('inline-block mr-3 flex items-center'); ?>
+                <template x-for="errorMessage in errorMessages">
+                    <span x-html="errorMessage"></span>
+                </template>
+            </p>
+        </template>
+    </form>
+    <div class="w-full">
+        <?= /* @noEscape */ $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
+    </div>
+    <script>
+        function initFooterNewsletterForm() {
+            return {
+                errors: 0,
+                hasCaptchaToken: 0,
+                displayErrorMessage: false,
+                errorMessages: [],
+                setErrorMessages(messages) {
+                    this.errorMessages = [messages]
+                    this.displayErrorMessage = this.errorMessages.length
+                },
+                submitForm() {
+                    // Do not rename $form, the variable is expected to be declared in the recaptcha output
+                    const $form = document.querySelector('#footer-newsletter-validate-detail');
+                    const email = $form.querySelector('input[name="email"]').value;
+                    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    <?= /* @noEscape */ $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
+
+                    if (!regex.test(email)) {
+                        this.errors = 1;
+                        this.setErrorMessages('<?= /* @noEscape */ $escaper->escapeHtml(__('Please enter a valid email address.')) ?>');
+                        this.displayErrorMessage = true;
+                    } else {
+                        this.errors = 0;
+                        this.displayErrorMessage = false;
+                    }
+
+                    if (this.errors === 0) {
+                        $form.submit();
+                    }
+                }
+            }
+        }
+    </script>
+</div>

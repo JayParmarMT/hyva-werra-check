@@ -1,0 +1,157 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\CurrentProduct;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\Wishlist;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var Wishlist $wishlistViewModel */
+$wishlistViewModel = $viewModels->require(Wishlist::class);
+
+/** @var HeroiconsSolid $heroicons */
+$heroicons = $viewModels->require(HeroiconsSolid::class);
+
+/** @var CurrentProduct $currentProduct */
+$currentProduct = $viewModels->require(CurrentProduct::class);
+
+/** @var Product $product */
+$product = $currentProduct->get();
+
+if (!$product->getId() || !$wishlistViewModel->isEnabled()) {
+    return;
+}
+/**
+ * When visiting wishlist/index/configure, the current class is Magento\Wishlist\Block\Item\Configure
+ * In that case we take the form parameters from the existing wishlist item
+ */
+$updateParams = $block->getUpdateParams() ?: null;
+$uniqueId = '_' . uniqid();
+?>
+<script>
+    function initWishlist<?= /* @noEscape */ /** @noEscape */ $uniqueId ?>() {
+        return {
+            addToWishlist(productId) {
+
+                const postParams = <?php if ($updateParams): ?>
+                    <?= /* @noEscape */ $updateParams ?>
+                <?php else: ?>
+                {
+                    action: BASE_URL + "wishlist/index/add/",
+                    data: {
+                        product: productId,
+                        uenc: hyva.getUenc()
+                    }
+                }
+                <?php endif; ?>
+
+                postParams.data['form_key'] = hyva.getFormKey();
+                postParams.data['qty'] = document.getElementById(`qty[${productId}]`)
+                    ? document.getElementById(`qty[${productId}]`).value || 1
+                    : 1;
+
+                let postData = Object.keys(postParams.data).map(key => {
+                    return `${key}=${postParams.data[key]}`;
+                }).join('&');
+
+                // take the all the input fields that configure this product
+                // includes custom, configurable, grouped and bundled options
+                Array.from(document.querySelectorAll(
+                    '[name^=options], [name^=super_attribute], [name^=bundle_option], [name^=super_group], [name^=links]')
+                ).map(input => {
+                    if (input.type === "select-multiple") {
+                        Array.from(input.selectedOptions).forEach(option => {
+                            postData += `&${input.name}=${option.value}`
+                        })
+                    } else {
+                        // skip "checkable inputs" that are not checked
+                        if(!(['radio', 'checkbox', 'select'].includes(input.type) && !input.checked)) {
+                            postData += `&${input.name}=${input.value}`
+                        }
+                    }
+                });
+                fetch(postParams.action, {
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    },
+                    "body": postData,
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
+                }).then((response) => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    } else if (response.ok) {
+                        return response.json();
+                    } else {
+                        typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                            [{
+                                type: "warning",
+                                text: "<?= /* @noEscape */ $escaper->escapeHtml(__('Could not add item to wishlist.')) ?>"
+                            }], 5000
+                        );
+                    }
+                }).then((response) => {
+                    if (!response) {
+                        return;
+                    }
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                        [{
+                            type: (response.success) ? "success" : "error",
+                            text: (response.success)
+                                ? "<?= /* @noEscape */ $escaper->escapeHtml(
+                                    __("%1 has been added to your Wish List.", __("Product"))
+                                ) ?>"
+                                : response.error_message
+                        }], 5000
+                    );
+                    const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                    window.dispatchEvent(reloadCustomerDataEvent);
+                }).catch((error) => {
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                        [{
+                            type: "error",
+                            text: error
+                        }], 5000
+                    );
+                });
+            }
+        }
+    }
+</script>
+
+<button x-data="initWishlist<?= /* @noEscape */ /** @noEscape */ $uniqueId ?>()"
+        x-defer="intersect"
+        @click.prevent="addToWishlist(<?= /* @noEscape */ (int)$product->getId() ?>)"
+        title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(
+            ($updateParams) ? __('Update Wish List') : __('Add to Wish List')
+        ) ?>"
+        aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(
+            ($updateParams) ? __('Update Wish List') : __('Add to Wish List')
+        ) ?>"
+        id="add-to-wishlist"
+        class="w-[48px] h-[48px] p-0 border-0 inline-flex
+                items-center justify-center text-gray-500 hover:text-red-600 md:ml-4"
+        data-addto="wishlist"
+>
+<svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1.48047" y="0.5" width="47" height="47" rx="23.5" fill="white"/>
+<rect x="1.48047" y="0.5" width="47" height="47" rx="23.5" stroke="currentColor"/>
+<path d="M24.9814 33.7999C24.9814 33.7999 14.248 27.6596 14.248 20.2911C14.248 12.9225 22.5962 12.3085 24.9814 18.0736C27.3666 12.3085 35.7147 12.9225 35.7147 20.2911C35.7147 27.6596 24.9814 33.7999 24.9814 33.7999Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</button>

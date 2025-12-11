@@ -1,0 +1,47 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Customer;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var Customer $customer */
+$customer = $viewModels->require(Customer::class);
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+$cmsBlock = $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class);
+
+$enabledBlocks = [];
+for ($i = 1; $i <= 5; $i++) {
+    if ($storeConfig->getStoreConfig("mt_hyva_theme_core_design_settings/footer/top_section/top_section_{$i}/enable")) {
+        $enabledBlocks[] = $i;
+    }
+}
+
+$columns = count($enabledBlocks);
+$columns = $columns > 0 ? $columns : 1; // Ensure at least 1 column
+$gridClass = "lg:grid-cols-{$columns}";
+?>
+<?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/top_section/enable')): ?>
+    <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 <?= /* @noEscape */ $gridClass ?> gap-6 md:gap-8 xl:gap-18 xl:col-span-2">
+        <?php foreach ($enabledBlocks as $i): ?>
+            <?php
+                $blockId = $storeConfig->getStoreConfig("mt_hyva_theme_core_design_settings/footer/top_section/top_section_{$i}/cms_block_id");
+                echo $cmsBlock->setBlockId($blockId)->toHtml();
+            ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

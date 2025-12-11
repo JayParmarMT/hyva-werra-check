@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+      <body>
+
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">mt-0 mb-0 product text-center md:px-0</argument>
+                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magento\Cms\Block\Block" name="home-page-popular-product-slider" after="product.info.main">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-popular-product-slider</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+      	<referenceContainer name="footer">
+      		<block class="Magento\Cms\Block\Block" name="footer-subscribe-block"  before="-">
+	            <arguments>
+	                <argument name="block_id" xsi:type="string">footer-subscribe-block</argument>
+	            </arguments>
+	        </block>
+			<block class="Magento\Cms\Block\Block" name="footer-cta" after="footer-subscribe-block">
+	            <arguments>
+	                <argument name="block_id" xsi:type="string">footer-cta</argument>
+	            </arguments>
+	        </block>	        
+	    </referenceContainer>
+        <referenceBlock name="product.info">
+            <action method="unsetData">
+                <argument name="key" xsi:type="string">sku</argument>
+                <argument name="key_2" xsi:type="string">color</argument>
+                <argument name="key_3" xsi:type="string">size</argument>
+                <argument name="key_4" xsi:type="string">gender</argument>
+                <argument name="key_5" xsi:type="string">material</argument>
+                <argument name="key_6" xsi:type="string">style_general</argument>
+            </action>
+            <arguments>
+                <argument name="attributes" xsi:type="array">
+                    <item name="beauty_material" xsi:type="array">
+                        <item name="call" xsi:type="string">default</item>
+                        <item name="code" xsi:type="string">beauty_material</item>
+                        <item name="label" xsi:type="string">default</item>
+                        <item name="css_class" xsi:type="string">beauty_material</item>
+                    </item>
+                    <item name="beauty_style" xsi:type="array">
+                        <item name="call" xsi:type="string">default</item>
+                        <item name="code" xsi:type="string">beauty_style</item>
+                        <item name="label" xsi:type="string">default</item>
+                        <item name="css_class" xsi:type="string">beauty_style</item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+	    <referenceBlock name="product.info.details">
+            <arguments>
+                <argument name="divider" xsi:type="boolean">false</argument> 
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="description">
+            <arguments>
+                <argument name="title" xsi:type="string" translate="true">Description</argument>
+            </arguments>
+        </referenceBlock>       
+    </body>
+</page>

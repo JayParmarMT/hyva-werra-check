@@ -1,0 +1,87 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\CurrentProduct;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ProductCompare;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var ProductCompare $compareViewModel */
+$compareViewModel = $viewModels->require(ProductCompare::class);
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var CurrentProduct $currentProduct */
+$currentProduct = $viewModels->require(CurrentProduct::class);
+
+/** @var Product $product */
+$product = $currentProduct->get();
+
+if (!$product->getId() || !$compareViewModel->showOnProductPage()) {
+    return;
+}
+?>
+<script>
+    function initCompareOnProductView() {
+        return {
+            addToCompare: function (productId) {
+                const formKey = hyva.getFormKey();
+                const postUrl = BASE_URL + 'catalog/product_compare/add/';
+
+                fetch(postUrl, {
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    },
+                    "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
+                }).then(function (response) {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                }).catch(function (error) {
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                        [{
+                            type: "error",
+                            text: error
+                        }], 5000
+                    );
+                });
+            }
+        };
+    }
+</script>
+
+<button x-data="initCompareOnProductView()"
+        @click.prevent="addToCompare(<?= /* @noEscape */ (int)$product->getId() ?>)"
+        title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+        aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+        id="add-to-compare"
+        class="w-[48px] h-[48px] p-0 border-0 inline-flex items-center
+            justify-center text-gray-500 hover:text-yellow-500 ml-2"
+        data-addto="compare"
+>
+    <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1.48047" y="0.5" width="47" height="47" rx="23.5" fill="white"/>
+<rect x="1.48047" y="0.5" width="47" height="47" rx="23.5" stroke="currentColor"/>
+<path d="M24.0469 13.2666V34.7333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23.9428 15.1333H17.6465C16.5419 15.1333 15.6465 16.0287 15.6465 17.1333V30.8666C15.6465 31.9712 16.5419 32.8666 17.6465 32.8666H23.9428M27.1337 15.1333H32.3132C33.4178 15.1333 34.3132 16.0287 34.3132 17.1333V30.8666C34.3132 31.9712 33.4178 32.8666 32.3132 32.8666H27.1337" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</button>

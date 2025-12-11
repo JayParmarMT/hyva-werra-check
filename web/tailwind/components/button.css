@@ -1,0 +1,65 @@
+@layer components {
+    .btn {
+        @apply flex justify-center items-center gap-1.5 border-2 px-4 py-2 text-base font-medium select-none cursor-pointer align-middle;
+        &:focus-visible {
+            @apply outline outline-0  outline-offset-0;
+        }        
+    }
+    .varient-btn {
+        @apply flex justify-center items-center gap-1.5 border-2 text-base font-medium select-none cursor-pointer align-middle pt-2;
+        &:focus-visible {
+            @apply outline outline-0  outline-offset-0;
+        }        
+    }
+
+    .btn-primary {
+        --btn-bg: theme("backgroundColor.werra.btn.primary");
+        --btn-color: theme("textColor.werra.btn.primary");
+        --btn-hover-bg: theme("backgroundColor.werra.btn.lighter");
+        --btn-disabled-bg: theme("backgroundColor.werra.btn.lighter");
+        --btn-hover-color: theme("textColor.werra.btn.lighter");
+        --btn-disabled-color: theme("textColor.werra.btn.lighter");
+        --btn-stroke: transparent;
+
+        background-color: var(--btn-bg);
+        color: var(--btn-color);
+        border-color: var(--btn-stroke);
+
+        &:hover {
+            background-color: var(--btn-hover-bg, var(--btn-bg));
+            color: var(--btn-hover-color, var(--btn-color));
+        }
+
+        &:disabled {
+            @apply opacity-70 cursor-not-allowed shadow-none hover:shadow-none;
+        }
+    }
+
+    .btn-secondary {        
+        --btn-bg: theme("backgroundColor.werra.btn.lighter");
+        --btn-color: theme("textColor.werra.btn.lighter");
+    }
+
+    .btn-banners {
+        --btn-color: theme("backgroundColor.werra.btn.primary");
+        --btn-bg: theme("textColor.werra.btn.primary");
+        --btn-hover-color: theme("backgroundColor.werra.btn.lighter");
+        --btn-hover-bg: theme("textColor.werra.btn.lighter");
+
+        background-color: var(--btn-bg);
+        color: var(--btn-color);
+
+        &:hover {
+            background-color: var(--btn-hover-bg, var(--btn-bg));
+            color: var(--btn-hover-color, var(--btn-color));
+        }
+    }
+
+    .btn-size-lg {
+        @apply px-10 py-4 text-lg;
+    }
+
+    .btn-size-sm {
+        @apply px-2 py-2 text-sm;
+    }
+}

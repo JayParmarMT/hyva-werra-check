@@ -1,0 +1,33 @@
+.page.messages {
+    @apply sticky top-0 z-20;
+
+    .messages
+    section#messages {
+        @apply container mx-auto py-3;
+    }
+}
+
+.message {
+    @apply flex items-center justify-between w-full p-2 pl-5 bg-gray-100 shadow rounded text-black font-semibold mb-2;
+
+    &.error {
+        @apply bg-werra-general-error_msg-background text-werra-general-error_msg-text border-werra-formElement-default;
+    }
+
+    &.success {
+        @apply bg-werra-general-success_msg-background text-werra-general-success_msg-text border-werra-formElement-default;
+    }
+
+    &.info,
+    &.notice {
+        @apply bg-werra-general-warning_msg-background text-werra-general-warning_msg-text border-werra-formElement-default;
+    }
+
+    &.warning {
+        @apply bg-werra-general-warning_msg-background text-werra-general-warning_msg-text border-werra-formElement-default;
+    }
+
+    a {
+        @apply underline
+    }
+}

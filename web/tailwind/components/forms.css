@@ -1,0 +1,98 @@
+/**
+ * Different styles can be found at https://tailwindcss-forms.vercel.app/
+ */
+ .form-input,
+ .form-email,
+ .form-select,
+ .form-multiselect,
+ .form-textarea {
+     @apply min-h-[2.75rem] border border-[theme('borderColor.werra.formElement.default')] rounded-md shadow-sm;
+     border-width: 1px;
+     border-radius: unset;
+     --tw-border-opacity: 1;
+     --tw-shadow: 0 1px 2px 0 #0000000d;
+     --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+ 
+     &:focus {
+         @apply border-primary-lighter ring ring-primary ring-opacity-50;
+         outline: 2px solid #0000;
+         outline-offset: 2px;
+         --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
+         --tw-ring-offset-width: 0px;
+         --tw-ring-offset-color: #fff;
+         --tw-ring-color: theme('colors.th-primary.default');
+         --tw-ring-offset-shadow: theme('backgroundColor.werra.btn.primary');
+         --tw-ring-shadow: theme('backgroundColor.werra.btn.primary');
+         border-color: theme('colors.th-primary.default');
+     }
+ }
+ 
+ /* Base styling for multiple form field types */
+ [multiple],
+ [type='date'],
+ [type='datetime-local'],
+ [type='email'],
+ [type='month'],
+ [type='number'],
+ [type='password'],
+ [type='search'],
+ [type='tel'],
+ [type='text'],
+ [type='time'],
+ [type='url'],
+ [type='week'],
+ input:where(:not([type])),
+ select,
+ textarea {
+     border-color: theme('borderColor.werra.formElement.default');
+     color: theme('textColor.werra.formElement.primary');
+     background-color: theme('backgroundColor.werra.formElement.background');
+ }
+ 
+ /* Focus styles */
+ [multiple]:focus,
+ [type='date']:focus,
+ [type='datetime-local']:focus,
+ [type='email']:focus,
+ [type='month']:focus,
+ [type='number']:focus,
+ [type='password']:focus,
+ [type='search']:focus,
+ [type='tel']:focus,
+ [type='text']:focus,
+ [type='time']:focus,
+ [type='url']:focus,
+ [type='week']:focus,
+ input:where(:not([type])):focus,
+ select:focus,
+ textarea:focus {
+     outline: 2px solid #0000;
+     outline-offset: 2px;
+     --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
+     --tw-ring-offset-width: 0px;
+     --tw-ring-offset-color: #fff;
+     --tw-ring-color: theme('colors.th-primary.default');
+     --tw-ring-offset-shadow: theme('backgroundColor.werra.btn.primary');
+     --tw-ring-shadow: theme('backgroundColor.werra.btn.primary');
+     --tw-shadow: theme('backgroundColor.werra.btn.primary');
+     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+     border-color: theme('colors.th-primary.default');
+ }
+ 
+ /* Checked state for checkboxes and radios */
+ [type='checkbox']:checked,
+ [type='radio']:checked,
+ [type='checkbox']:checked:hover,
+ [type='radio']:checked:hover,
+ [type='checkbox']:checked:focus,
+ [type='radio']:checked:focus,
+ [type='checkbox']:focus,
+ [type='radio']:focus {
+     background-color: theme('backgroundColor.werra.btn.primary');
+     --tw-ring-offset-shadow: theme('backgroundColor.werra.btn.primary');
+     --tw-ring-shadow: theme('backgroundColor.werra.btn.primary');
+     --tw-shadow: theme('backgroundColor.werra.btn.primary');
+     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+ }
+ 

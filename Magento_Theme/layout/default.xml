@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceContainer name="head.additional">
+            <block class="Meetanshi\HyvaWerra\Block\StoreStyles" name="store_specific_styles" template="Meetanshi_HyvaWerra::store_styles.phtml" />
+        </referenceContainer>
+		<referenceContainer name="header.container">
+		    <block class="Magento\Cms\Block\Block" name="top_notification" before="-">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">top-notification-bar</argument>
+                </arguments>
+            </block>
+		</referenceContainer>
+		<referenceBlock name="script-alpine-js">
+            <block name="alpine-plugin-collapse" template="Magento_Theme::page/js/plugins/collapse.phtml"/>
+        </referenceBlock>
+	</body>
+</page>

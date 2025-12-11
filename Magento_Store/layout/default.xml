@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <referenceBlock name="header-content">
+            <block
+                name="header.store-language-switcher"
+                as="store-language-switcher"
+                template="Magento_Store::header/languages.phtml"
+            >
+                <arguments>
+                    <argument name="show_label" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="store-language-switcher" remove="true"/>
+    </body>
+</page>

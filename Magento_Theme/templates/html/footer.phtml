@@ -1,0 +1,49 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\Escaper;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\StoreConfig;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+$storeConfig = $viewModels->require(StoreConfig::class);
+$cmsBlock = $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class);
+
+?>
+<?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/enable')): ?>
+    <div class="shadow bg-werra-footer-top-primary">
+        <?php if ($block->getChildNames()): ?>
+            <div class="container pt-16 pb-8">
+                <div class="flex flex-wrap order-first gap-y-8 md:gap-y-16">
+                    <?php foreach ($block->getChildNames() as $childName): ?>
+                        <?= /* @noEscape */ $childName !== 'footer-copyright' ? $block->getBlockHtml($childName) : '' ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>    
+        <?php endif; ?>
+        <div class="border-t border-t-1 border-ftc bg-werra-footer-bottom-primary">
+            <div class="text-[16px] py-6 container block md:flex items-center sm:flex-row flex-col justify-between">
+                <?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_1/enable')): ?>
+                    <?= /* @noEscape */ $cmsBlock->setBlockId($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_1/cms_block_id'))->toHtml(); ?>
+                <?php endif;?>
+                <?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_2/enable')): ?>
+                    <div class="trn-links text-footerBottom-section2-textColor text-[16px]">
+                        <?= /* @noEscape */ $cmsBlock->setBlockId($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_2/cms_block_id'))->toHtml(); ?>
+                    </div>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
+
+

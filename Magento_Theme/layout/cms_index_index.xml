@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="hyva_product_slider" />
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Cms\Block\Block" name="home_page_top_slider" before="-">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-top-slider</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home_page_category_list" after="home_page_top_slider">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-category-list</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home_page_collection_block" after="home_page_category_list">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-collection-block</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home-page-popular-product-slider" after="home_page_collection_block">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-popular-product-slider</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home_page_video_block" after="home-page-popular-product-slider">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-video-block</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home-page-best-selling-product-slider">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-best-selling-product-slider</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home_page_collection_second_block" after="home-page-best-selling-product-slider">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-collection-second-block</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="home_page_customer_logo_block" after="home_page_collection_second_block">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">home-page-customer-logo</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="hero" remove="true"/>
+        <referenceBlock name="content-1" remove="true"/>
+        <referenceBlock name="slider-1" remove="true"/>
+        <referenceBlock name="slider-2" remove="true"/>
+        <referenceBlock name="page.main.title" remove="true"/>
+    </body>
+</page>

@@ -1,0 +1,101 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Slider;
+use Magento\Framework\View\Element\Template;
+
+/** @var ViewModelRegistry $viewModels */
+/** @var Slider $sliderViewModel */
+/** @var Template $block */
+
+$sliderViewModel = $viewModels->require(Slider::class);
+
+/**
+ * These items are examples. You could query products, categories, etc..
+ * Change the slider-item.phtml accordingly to display the correct properties.
+ */
+
+
+$htmlContent = '
+<figcaption class="w-[40%] relative col-start-1 row-start-1 self-end pt-12 pb-20 sm:pb-24 to-transparent text-white ">
+   <a href="http://localhost/hyva_werra-theme/home/" aria-label="Visit 1" class="block">
+      <p class="text-[12px] tracking-extra-wide uppercase mb-4">
+         SKIN - ESSENTAILS                        
+      </p>
+      <p class="sm:text-3xl md:text-5xl lg:text-[40px] sm:leading-none md:leading-lh48 mb-4 w-[77%]">
+         Let your Skin Breathe with this Light Moisturizer                        
+      </p>
+      <p class="text-[16px] sm:mb-3 sm:leading-none md:leading-lh30 w-[60%] mb-4">
+         but also the leap into electronic typesetting, remaining essentially unchanged.                        
+      </p>
+   </a>
+   <a href="http://localhost/hyva_werra-theme/home/">
+      <button class="btn btn-secondary mt-6 tracking-extra-wide px-6 text-[12px] uppercase">- Explore More -</button>
+   </a>
+</figcaption>
+';
+
+
+$items = [
+    [
+        // All options
+        'image_url' => 'http://localhost/hyva_werra-theme/pub/media/meetanshi/hyva_slider/Frame_1.png',
+        'image_alt' => __('New Arrivals'),
+        'content' => $htmlContent,
+        'url' => $block->getUrl('home'),
+    ],
+    [
+        'image_url' => 'http://localhost/hyva_werra-theme/pub/media/meetanshi/hyva_slider/Frame_1.png',
+        'image_alt' => __('Summer Collection'),
+        'content' => $htmlContent,
+        'url' => $block->getUrl('home'),
+    ],
+    [
+        'image_url' => 'http://localhost/hyva_werra-theme/pub/media/meetanshi/hyva_slider/Frame_1.png',
+        'image_alt' => __('Summer Collection'),
+        'content' => $htmlContent,
+        'url' => $block->getUrl('home'),
+    ],
+    [
+        'image_url' => 'http://localhost/hyva_werra-theme/pub/media/meetanshi/hyva_slider/Frame_1.png',
+        'image_alt' => __('Summer Collection'),
+        'content' => $htmlContent,
+        'url' => $block->getUrl('home'),
+    ],
+];
+
+$sliderStyle = (string) $block->getSliderStyle();
+$sliderShowArrows = $block->getShowArrows() !== null ? $block->getShowArrows() : "end";
+$sliderShowDots = $block->getShowDots() !== null ? (bool) $block->getShowDots() : true;
+$sliderLoop = $block->getLoop() !== null ? (bool) $block->getLoop() : false;
+$sliderAutoplay = $block->getAutoplay() !== null ? (bool) $block->getAutoplay() : false;
+$sliderSpeed = (int) $block->getSpeed();
+$loadFirstEager = (bool) $block->getLoadFirstEager();
+
+?>
+<div class="">
+    <?= /* @noEscape */
+        $sliderViewModel
+            ->getSliderForItems(
+                'Magento_Theme::elements/ui-slider/slider-item.phtml',
+                $items,
+                'Magento_Theme::elements/ui-slider/slider-php.phtml'
+            )
+            ->setSliderStyle($sliderStyle)
+            ->setShowArrows($sliderShowArrows)
+            ->setShowDots($sliderShowDots)
+            ->setLoop($sliderLoop)
+            ->setAutoplay($sliderAutoplay)
+            ->setSpeed($sliderSpeed)
+            ->setLoadFirstEager($loadFirstEager)
+            ->toHtml()
+        ?>
+</div>

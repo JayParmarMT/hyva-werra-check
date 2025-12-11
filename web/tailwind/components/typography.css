@@ -1,0 +1,31 @@
+@layer utilities {
+    /* This class only exists for backwards compatibility, */
+    /* The default is applied in tailwind.config.js since Hyvä 1.2.0 */
+    .text-sans-serif {
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+}
+
+html {
+    @apply antialiased;
+    @font-face {
+        font-family: 'Raleway-r';
+         src: url('../fonts/raleway/raleway-v34-latin-500.woff2') format('woff2'), 
+	         url('../fonts/raleway/raleway-v34-latin-500.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+	  }
+	@font-face {
+	    font-family: 'Raleway-b';
+	    src: url('../fonts/raleway/raleway-v34-latin-600.woff2') format('woff2'), 
+	         url('../fonts/raleway/raleway-v34-latin-600.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	    font-display: swap;
+	  }
+}
+
+body {
+    @apply text-black leading-normal text-base tracking-normal font-RalewayR;
+}
