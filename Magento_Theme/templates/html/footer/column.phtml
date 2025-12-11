@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -16,6 +15,6 @@ use Magento\Framework\Escaper;
 ?>
 <?php if ($childrenHtml = $block->getChildHtml()): ?>
     <div class="flex flex-wrap gap-8 pr-4 w-full lg:w-1/4 md:w-1/2">
-        <?= /* @noEscape */ /** @noEscape */ $childrenHtml ?>
+        <?= /** @noEscape */ $childrenHtml ?>
     </div>
 <?php endif; ?>

@@ -1,49 +1,31 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Escaper;
-use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\StoreConfig;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var ViewModelRegistry $viewModels */
-$storeConfig = $viewModels->require(StoreConfig::class);
-$cmsBlock = $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class);
-
 ?>
-<?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/enable')): ?>
-    <div class="shadow bg-werra-footer-top-primary">
-        <?php if ($block->getChildNames()): ?>
-            <div class="container pt-16 pb-8">
-                <div class="flex flex-wrap order-first gap-y-8 md:gap-y-16">
-                    <?php foreach ($block->getChildNames() as $childName): ?>
-                        <?= /* @noEscape */ $childName !== 'footer-copyright' ? $block->getBlockHtml($childName) : '' ?>
-                    <?php endforeach; ?>
-                </div>
-            </div>    
-        <?php endif; ?>
-        <div class="border-t border-t-1 border-ftc bg-werra-footer-bottom-primary">
-            <div class="text-[16px] py-6 container block md:flex items-center sm:flex-row flex-col justify-between">
-                <?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_1/enable')): ?>
-                    <?= /* @noEscape */ $cmsBlock->setBlockId($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_1/cms_block_id'))->toHtml(); ?>
-                <?php endif;?>
-                <?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_2/enable')): ?>
-                    <div class="trn-links text-footerBottom-section2-textColor text-[16px]">
-                        <?= /* @noEscape */ $cmsBlock->setBlockId($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/bottom_section/bottom_section_2/cms_block_id'))->toHtml(); ?>
-                    </div>
-                <?php endif;?>
-            </div>
+<div class="bg-gray-100 border-t border-gray-300 pb-16">
+    <div class="container py-8">
+        <div class="flex flex-wrap gap-y-16">
+            <?php foreach ($block->getChildNames() as $childName): ?>
+                <?= $childName !== 'footer-copyright' ? $block->getBlockHtml($childName) : '' ?>
+            <?php endforeach; ?>
         </div>
     </div>
-<?php endif;?>
-
+    <div class="bg-surface border-t border-b border-gray-300">
+        <div class="container py-6 flex items-center sm:flex-row flex-col">
+            <a href="https://hyva.io" class="text-xl font-medium">Hyvä Theme</a>
+            <p><?= $block->getChildHtml('copyright') ?></p>
+        </div>
+    </div>
+</div>
 

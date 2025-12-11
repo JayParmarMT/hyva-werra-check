@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -53,16 +52,16 @@ $galleryOptionVideoLoop = $storeConfig->getStoreConfig('catalog/product_video/vi
 $productName = $block->getProduct()->getName();
 ?>
 
-<div id="gallery"
-     x-data="initGallery()"
-     x-bind="eventListeners"
-     class="w-full md:pt-0 md:h-auto md:row-start-1 md:row-span-2 md:col-start-1 order-1"
-    >
+<div
+    id="gallery"
+    x-data="initGallery()"
+    x-bind="eventListeners"
+>
     <div
         :class="{'w-full h-full fixed top-0 left-0 bg-white z-50 flex': fullscreen}"
         :role="fullscreen ? 'dialog' : false"
         :aria-modal="fullscreen"
-        :aria-label="fullscreen ? '<?= /* @noEscape */ $escaper->escapeJs(__('Gallery modal fullscreen')) ?>' : false"
+        :aria-label="fullscreen ? '<?= $escaper->escapeJs(__('Gallery modal fullscreen')) ?>' : false"
     >
         <div class="relative self-center w-full"
              @touchstart.passive="handleTouchStart"
@@ -71,7 +70,7 @@ $productName = $block->getProduct()->getName();
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
         >
-            <div class="relative mb-6" aria-live="polite" aria-atomic="true">
+            <div id="gallery-main" class="relative mb-6" aria-live="polite" aria-atomic="true">
                 <?php
                 /**
                  * The first image is a placeholder that determines the
@@ -82,19 +81,19 @@ $productName = $block->getProduct()->getName();
                  */
                 ?>
                 <img
-                    alt="<?= /* @noEscape */ $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
-                    title="<?= /* @noEscape */ $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
+                    alt="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
+                    title="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
                     class="object-contain object-center w-full h-auto"
                     :class="fullscreen ? 'invisible max-h-screen-75' : 'invisible'"
                     src="<?= /* @noEscape */ $mainImageData ?>"
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
                     itemprop="image"
-                />
+                >
                 <template x-for="(image, index) in images" :key="index">
                     <img
-                        :alt="image.caption || '<?= /* @noEscape */ $escaper->escapeJs($productName) ?>'"
-                        :title="image.caption || '<?= /* @noEscape */ $escaper->escapeJs($productName) ?>'"
+                        :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                        :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         class="absolute inset-0 object-contain object-center w-full m-auto"
                         :class="{ 'max-h-screen-75': fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
@@ -103,12 +102,12 @@ $productName = $block->getProduct()->getName();
                         :src="fullscreen ? image.full : image.img"
                         x-transition.opacity.duration.500ms
                         x-show="active === index"
-                    />
+                    >
                 </template>
                 <button
                     type="button"
                     class="absolute inset-0 w-full outline-offset-2"
-                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Click to view image in fullscreen')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Click to view image in fullscreen')) ?>"
                     x-ref="galleryFullscreenBtn"
                     x-show="!fullscreen && images[active].type !== 'video'"
                     x-cloak
@@ -118,13 +117,13 @@ $productName = $block->getProduct()->getName();
                 <button
                     type="button"
                     class="group absolute inset-0 outline-offset-2 grid place-items-center"
-                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Play video')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Play video')) ?>"
                     x-show="images[active].type === 'video' && !activeVideoType"
                     x-cloak
                     @click="activateVideo()"
                     @keydown.enter="activateVideo()"
                 >
-                    <?= /* @noEscape */ $heroiconsSolid->playHtml(
+                    <?= $heroiconsSolid->playHtml(
                         'stroke-white/75 fill-black/20 transition ease-in group-hover:scale-110 md:w-24 md:h-24',
                         44,
                         44,
@@ -159,12 +158,12 @@ $productName = $block->getProduct()->getName();
             >
                 <button
                     type="button"
-                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Previous')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Previous')) ?>"
                     tabindex="-1"
                     class="p-2.5 flex items-center justify-center self-stretch text-black outline-none focus:outline-none flex-none"
                     :class="{ 'opacity-25 pointer-events-none' : isSliderStart, 'hidden' : !isSlider }"
                     @click="scrollPrevious"
-                ><?= /* @noEscape */ $heroicons->chevronLeftHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
+                ><?= $heroicons->chevronLeftHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
                 <div class="js_thumbs_slides thumbs-wrapper relative flex flex-nowrap w-full overflow-auto js_slides snap"
                      x-ref="jsThumbSlides"
                      @scroll.debounce="calcPageSize(); calcActive(); calcScrollStartEnd()"
@@ -174,25 +173,24 @@ $productName = $block->getProduct()->getName();
                             <button
                                 type="button"
                                 @click.prevent="setActive(index);"
-                                class="relative block  hover:border focus:border hover:border-gray-300 focus:border-gray-300 rounded-md hover:shadow-md focus:shadow-md"
-                                :class="{'border border-gray-300 shadow-md': active === index}"
+                                class="relative block border border-gray-300 hover:border-primary focus:border-primary"
+                                :class="{'border-primary': active === index}"
                             >
                                 <span class="sr-only">
-                                    <?= /* @noEscape */ $escaper->escapeHtml('View larger image') ?>
+                                    <?= $escaper->escapeHtml('View larger image') ?>
                                 </span>
                                 <img
-                                class="rounded-md"
                                     :src="image.thumb"
-                                    :alt="image.caption || '<?= /* @noEscape */ $escaper->escapeJs(__("%1 thumbnail", $productName)) ?>'"
-                                    :title="image.caption || '<?= /* @noEscape */ $escaper->escapeJs(__("%1 thumbnail", $productName)) ?>'"
+                                    :alt="image.caption || '<?= $escaper->escapeJs(__("%1 thumbnail", $productName)) ?>'"
+                                    :title="image.caption || '<?= $escaper->escapeJs(__("%1 thumbnail", $productName)) ?>'"
                                     width="<?= /* @noEscape */ $smallWidth ?>"
                                     height="<?= /* @noEscape */ $smallHeight ?>"
-                                />
+                                >
                                 <span
                                     class="absolute inset-0 grid place-items-center"
                                     x-show="image.type === 'video'"
                                 >
-                                    <?= /* @noEscape */ $heroicons->videoCameraHtml('stroke-white/75 fill-black/20', 44, 44, ['aria-hidden' => 'true']); ?>
+                                    <?= $heroicons->videoCameraHtml('stroke-white/75 fill-black/20', 44, 44, ['aria-hidden' => 'true']); ?>
                                 </span>
                             </button>
                         </div>
@@ -202,12 +200,12 @@ $productName = $block->getProduct()->getName();
                     type="button"
                     x-show="images.length > 1"
                     x-cloak
-                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Next')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Next')) ?>"
                     tabindex="-1"
                     class="p-2.5 flex items-center justify-center self-stretch text-black outline-none focus:outline-none flex-none"
                     :class="{ 'opacity-25 pointer-events-none' : isSliderEnd, 'hidden' : !isSlider }"
                     @click="scrollNext"
-                ><?= /* @noEscape */ $heroicons->chevronRightHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
+                ><?= $heroicons->chevronRightHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
             </div>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">
@@ -216,9 +214,9 @@ $productName = $block->getProduct()->getName();
                     class="hidden text-gray-500 p-3 hover:text-gray-600 focus:text-gray-600
                         transition ease-in-out duration-150"
                     :class="{ 'hidden': !fullscreen, 'block': fullscreen }"
-                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
             >
-                <?= /* @noEscape */ $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
             </button>
         </div>
     </div>
@@ -232,14 +230,14 @@ $productName = $block->getProduct()->getName();
             "videoData": {},
             "activeVideoType": false,
             "autoplayVideo": false,
-            "loopVideo": <?= /* @noEscape */ $galleryOptionVideoLoop ? 'true' : 'false' ?>,
-            "relatedVideos": <?= /* @noEscape */ $galleryOptionShowRelated ? 'true' : 'false' ?>,
+            "loopVideo": <?= $galleryOptionVideoLoop ? 'true' : 'false' ?>,
+            "relatedVideos": <?= $galleryOptionShowRelated ? 'true' : 'false' ?>,
             "vimeoPlayer": null,
             "fullscreen": false,
             "isSlider": false,
             "initialImages": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
             "images": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
-            "appendOnReceiveImages": <?= /* @noEscape */
+            "appendOnReceiveImages": <?=
                 $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') === 'append' ? 'true' : 'false'
             ?>,
             "activeSlide": 0,

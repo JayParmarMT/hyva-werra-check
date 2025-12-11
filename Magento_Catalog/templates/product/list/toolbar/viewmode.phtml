@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -23,9 +22,9 @@ use Magento\Framework\Escaper;
     <?php $modes = $block->getModes(); ?>
     <?php if ($modes && count($modes) > 1): ?>
         <nav
-            class="modes flex justify-center gap-1 mr-2 items-center px-2 py-2 border border-gray-300 bg-white text-sm leading-5
+            class="modes invisible md:visible flex justify-center gap-1 mr-2 items-center px-2 py-2 rounded-md border border-gray-300 bg-white text-sm leading-5
                 w-20 order-1 col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2"
-            aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Products view mode')) ?>"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Products view mode')) ?>"
         >
             <style>
                 .modes-mode.mode-grid {
@@ -39,20 +38,20 @@ use Magento\Framework\Escaper;
             <?php foreach ($block->getModes() as $code => $label): ?>
                 <button
                     type="button"
-                    class="modes-mode w-6 h-6 mode-<?= /* @noEscape */ $escaper->escapeHtmlAttr(strtolower($code)) ?> <?= /* @noEscape */ ($block->isModeActive($code)) ? 'active' : 'opacity-50 hover:opacity-100' ?>"
-                    title="<?= /* @noEscape */ $escaper->escapeHtmlAttr($label) ?>"
+                    class="modes-mode w-6 h-6 mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> <?= ($block->isModeActive($code)) ? 'active' : 'opacity-50 hover:opacity-100' ?>"
+                    title="<?= $escaper->escapeHtmlAttr($label) ?>"
                     <?php if ($block->isModeActive($code)): ?>
                         disabled
                     <?php else: ?>
                         @click.prevent="changeUrl(
                             'product_list_mode',
-                            '<?= /* @noEscape */ $escaper->escapeHtmlAttr(strtolower($code)) ?>',
+                            '<?= $escaper->escapeHtmlAttr(strtolower($code)) ?>',
                             options.modeDefault
                         )"
                     <?php endif; ?>
                     data-role="mode-switcher"
-                    data-value="<?= /* @noEscape */ $escaper->escapeHtmlAttr(strtolower($code)) ?>"
-                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Products view mode - %1', $label)) ?>"
+                    data-value="<?= $escaper->escapeHtmlAttr(strtolower($code)) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Products view mode - %1', $label)) ?>"
                 ></button>
             <?php endforeach; ?>
         </nav>

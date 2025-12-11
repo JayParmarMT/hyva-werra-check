@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -27,7 +26,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
 ?>
 <script>
     <?php if ($defaultSuccessMessageTimeout): ?>
-    window.defaultSuccessMessageTimeout = <?= /* @noEscape */ (int) $defaultSuccessMessageTimeout ?>;
+    window.defaultSuccessMessageTimeout = <?= (int) $defaultSuccessMessageTimeout ?>;
     <?php endif; ?>
     function initMessages() {
         "use strict";
@@ -62,7 +61,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
             },
             setHideTimeOut(messageIndex, hideAfter) {
                 setTimeout((messageIndex) => {
-                    this.removeMessage(messageIndex);
+                    this.messages[messageIndex] = undefined;
                 }, hideAfter, messageIndex);
             },
             eventListeners: {
@@ -81,6 +80,11 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
                 },
                 ['@clear-messages.window']() {
                     this.messages = [];
+                },
+                ['@pageshow.window'](event) {
+                    if (event.persisted) {
+                        this.messages = [];
+                    };
                 }
             },
             getMessageUiId() {
@@ -95,7 +99,6 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
 <section id="messages"
          x-data="initMessages"
          x-bind="eventListeners"
-         aria-live="assertive"
          role="alert"
 >
     <template x-if="hasMessages">
@@ -111,11 +114,11 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
                                 <span x-html="message.text"></span>
                                 <button
                                     type="button"
-                                    class="text-white hover:text-white"
-                                    aria-label="<?= /* @noEscape */ $escaper->escapeHtml(__('Close message')) ?>"
+                                    class="text-gray-600 hover:text-black"
+                                    aria-label="<?= $escaper->escapeHtml(__('Close message')) ?>"
                                     @click.prevent="removeMessage"
                                 >
-                                    <?= /* @noEscape */ $heroicons->xHtml('stroke-current', 18, 18, ['aria-hidden' => 'true']); ?>
+                                    <?= $heroicons->xHtml('stroke-current', 18, 18, ['aria-hidden' => 'true']); ?>
                                 </button>
                             </div>
                         </template>

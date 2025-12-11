@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -20,36 +19,25 @@ use Magento\Catalog\Model\Product;
 /** @var CatalogOutputHelper $output */
 /** @var Attributes $block */
 
+
 /** @var CatalogOutputHelper $catalogOutputHelper */
 $catalogOutputHelper = $this->helper(CatalogOutputHelper::class);
 
 /** @var Product $product */
 $product = $block->getProduct();
-
-$getLayoutStyle = (string) $block->getLayoutStyle() ?: "";
-
-$layoutStyleTableRow = $getLayoutStyle === "" ? "block lg:table-row" : ($getLayoutStyle === "list" ? "block" : "");
-$layoutStyleTableCellHeading = $getLayoutStyle === ""
-    ? "block lg:table-cell pt-3 lg:py-2 px-3"
-    : ($getLayoutStyle === "list" ? "block pt-3 px-3" : "py-2 px-3");
-$layoutStyleTableCellItem = $getLayoutStyle === ""
-    ? "block lg:table-cell pb-3 lg:py-2 px-3"
-    : ($getLayoutStyle === "list" ? "block pb-3 px-3" : "py-2 px-3");
 ?>
 
 <?php if ($attributes = $block->getAdditionalData()): ?>
-    <div class="table-wrapper overflow-x-auto" id="product-attributes">
-        <table class="additional-attributes table-fixed w-full">
+    <div class="table-wrapper max-w-prose overflow-x-auto" id="product-attributes">
+        <table class="additional-attributes w-full">
             <?php foreach ($attributes as $attribute): ?>
-                <tr class="text-th-primary-darker <?= /* @noEscape */ $layoutStyleTableRow ?>">
-                    <th
-                        class="col label product-attribute-label text-start text-th-primary-darker break-words hyphens-auto <?= /* @noEscape */ $layoutStyleTableCellHeading ?>"
-                        scope="row"
-                    ><?= /* @noEscape */ $escaper->escapeHtml($attribute['label']) ?></th>
-                    <td
-                        class="col data product-attribute-value text-start text-th-primary-darker break-words hyphens-auto <?= /* @noEscape */ $layoutStyleTableCellItem ?>"
-                        data-th="<?= /* @noEscape */ $escaper->escapeHtmlAttr($attribute['label']) ?>"
-                    ><?= /* @noEscape */ $catalogOutputHelper->productAttribute($product, $attribute['value'], $attribute['code']) ?></td>
+                <tr class="border-b border-gray-300 last:border-b-0">
+                    <th class="col label w-1/2 py-2 text-left text-fg-secondary font-normal product-attribute-label"
+                        scope="row"><?= $escaper->escapeHtml($attribute['label']) ?></th>
+                    <td class="col data w-1/2 py-2 pl-2 text-left product-attribute-value"
+                        data-th="<?= $escaper->escapeHtmlAttr($attribute['label']) ?>"
+                    ><?= /* @noEscape */
+                     $catalogOutputHelper->productAttribute($product, $attribute['value'], $attribute['code']) ?></td>
                 </tr>
             <?php endforeach; ?>
         </table>

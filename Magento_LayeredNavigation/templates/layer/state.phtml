@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -24,7 +23,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 <?php if (!empty($filters)): ?>
 <div
     x-data="{ open: true }"
-    class="filter-current bg-container-lighter border border-container p-4 md:px-8 md:mt-4"
+    class="filter-current bg-white border border-gray-300 p-4 md:px-8 md:mt-4"
 >
     <h3 id="active-filtering-heading">
         <button
@@ -35,9 +34,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             :aria-expanded="open"
             x-init="$nextTick(() => $el.focus())"
         >
-            <strong><?= /* @noEscape */ $escaper->escapeHtml(__('Active filtering')) ?></strong>
-            <span class="py-1 px-1 rounded border border-container">
-                <?= /* @noEscape */ $heroicons->chevronDownHtml(
+            <strong><?= $escaper->escapeHtml(__('Active filtering')) ?></strong>
+            <span class="py-1 px-1 rounded border border-gray-300">
+                <?= $heroicons->chevronDownHtml(
                     'transition-transform transform duration-300 ease-in-out',
                     24,
                     24,
@@ -64,16 +63,16 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             ?>
             <div class="item flex justify-between items-center">
                 <span>
-                    <span class="filter-label block"><?= /* @noEscape */ $escaper->escapeHtml(__($filterName)) ?></span>
+                    <span class="filter-label block"><?= $escaper->escapeHtml(__($filterName)) ?></span>
                     <span class="filter-value text-sm block">
-                        <?= /* @noEscape */ $escaper->escapeHtml($filterLabel) ?>
+                        <?= $escaper->escapeHtml($filterLabel) ?>
                     </span>
                 </span>
                 <span>
-                    <a class="py-2 px-2 text-center block action remove text-primary hover:text-primary-darker"
-                       href="<?= /* @noEscape */ $escaper->escapeUrl($filter->getRemoveUrl()) ?>"
+                    <a class="py-2 px-2 text-center block action remove text-fg-secondary hover:text-fg"
+                       href="<?= $escaper->escapeUrl($filter->getRemoveUrl()) ?>"
                        title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Remove active %1 filter: %2', $filterName, $filterLabel)) ?>">
-                        <?= /* @noEscape */ $heroicons->trashHtml('', 20, 20, ["aria-hidden" => "true"]); ?>
+                        <?= $heroicons->trashHtml('', 20, 20, ["aria-hidden" => "true"]); ?>
                     </a>
                 </span>
             </div>
@@ -81,8 +80,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
     </div>
     <?php if ($block->getLayer()->getState()->getFilters()): ?>
         <div class="block-actions filter-actions">
-            <a href="<?= /* @noEscape */ $escaper->escapeUrl($block->getClearUrl()) ?>"
-               class="text-xs text-primary hover:text-primary-darker"><?= /* @noEscape */ $escaper->escapeHtml(__('Clear All')) ?></a>
+            <a href="<?= $escaper->escapeUrl($block->getClearUrl()) ?>"
+               class="text-sm text-fg-secondary hover:text-fg"><?= $escaper->escapeHtml(__('Clear All')) ?></a>
         </div>
     <?php endif; ?>
 </div>

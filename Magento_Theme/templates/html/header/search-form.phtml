@@ -1,15 +1,14 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\Search\Helper\Data as SearchHelper;
@@ -23,8 +22,8 @@ use Magento\Search\ViewModel\ConfigProvider as SearchConfig;
 /** @var SearchHelper $helper */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 /** @var SearchHelper $helper */
 $helper = $this->helper(SearchHelper::class);
@@ -37,7 +36,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
 
     function initMiniSearch() {
         return {
-            minSearchLength: <?= /* @noEscape */ (int) $helper->getMinQueryLength() ?>,
+            minSearchLength: <?= (int) $helper->getMinQueryLength() ?>,
             <?php if ($searchConfig->isSuggestionsAllowed()): ?>
             suggestions: [],
             suggest() {
@@ -67,7 +66,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                 const search = this.$refs.searchInput;
                 term = term || search.value;
                 if (term.length < this.minSearchLength) {
-                    search.setCustomValidity('<?= /* @noEscape */ $escaper->escapeJs(
+                    search.setCustomValidity('<?= $escaper->escapeJs(
                         __('Minimum Search query length is %1', $helper->getMinQueryLength())
                     ) ?>');
                     search.reportValidity();
@@ -89,28 +88,28 @@ $searchConfig = $viewModels->require(SearchConfig::class);
     }
 </script>
 <div class="container py-2 mx-auto text-black" x-data="initMiniSearch()">
-    <search title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Store')) ?>" role="search">
+    <search title="<?= $escaper->escapeHtmlAttr(__('Store')) ?>" role="search">
         <form
             id="search_mini_form"
             class="form minisearch flex"
-            action="<?= /* @noEscape */ $escaper->escapeUrl($helper->getResultUrl()) ?>"
+            action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>"
             method="get"
             @submit.prevent="search()"
             x-ref="form"
         >
             <label class="sr-only" for="search">
-                <?= /* @noEscape */ $escaper->escapeHtml(__('Search')) ?>
+                <?= $escaper->escapeHtml(__('Search')) ?>
             </label>
             <input
                 id="search"
                 x-ref="searchInput"
                 type="search"
                 autocomplete="off"
-                name="<?= /* @noEscape */ $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
-                value="<?= /* @noEscape */ /** @noEscape */ $helper->getEscapedQueryText() ?>"
-                placeholder="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Search entire store here...')) ?>"
-                maxlength="<?= /* @noEscape */ $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
-                class="w-full text-lg lg:text-xl text-werra-formElement-primary rounded-l"
+                name="<?= $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+                value="<?= /** @noEscape */ $helper->getEscapedQueryText() ?>"
+                placeholder="<?= $escaper->escapeHtmlAttr(__('Search entire store here...')) ?>"
+                maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
+                class="form-input w-full rounded-e-none"
                 @search-open.window.debounce.10="$el.focus(); $el.select()"
                 <?php if ($searchConfig->isSuggestionsAllowed()): ?>
                     @focus.once="suggest"
@@ -120,24 +119,24 @@ $searchConfig = $viewModels->require(SearchConfig::class);
             >
             <button
                 type="submit"
-                class="action search btn btn-primary rounded-l-none rounded-r shrink-0 p-3 shadow-none"
-                title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Search')) ?>"
-                aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Search')) ?>"
+                class="btn btn-primary p-2.5 rounded-s-none shrink-0 outline-offset-0"
+                title="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"
             >
-                <?= /* @noEscape */ $heroicons->searchHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                <?= $lucideIcons->searchHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
             </button>
         </form>
     </search>
     <?php if ($searchConfig->isSuggestionsAllowed()): ?>
         <template x-if="suggestions.length > 0">
             <nav
-                aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
                 class="flex flex-col mt-1 text-grey-800 gap-1"
             >
                 <template x-for="suggestion in suggestions">
                     <button
                         type="button"
-                        class="flex justify-between p-2 bg-container-lighter even:bg-container border border-container hover:bg-container-darker"
+                        class="flex justify-between p-2 bg-white even:bg-gray-50 border border-gray-300 hover:bg-gray-100"
                         @click="search(suggestion.title)"
                         @keydown.enter="search(suggestion.title)"
                         @keydown.arrow-up.prevent="focusElement($event.target.previousElementSibling) || $refs.searchInput.focus()"

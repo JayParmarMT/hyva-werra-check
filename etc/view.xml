@@ -2,9 +2,8 @@
 <!--
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
@@ -19,16 +18,16 @@
                 <height>300</height>
             </image>
             <image id="cart_page_product_thumbnail" type="small_image">
-                <width>110</width>
-                <height>160</height>
+                <width>96</width>
+                <height>96</height>
             </image>
             <image id="category_page_grid" type="small_image">
-                <width>296</width>
-                <height>296</height>
+                <width>360</width>
+                <height>360</height>
             </image>
             <image id="category_page_list" type="small_image">
-                <width>296</width>
-                <height>296</height>
+                <width>360</width>
+                <height>360</height>
             </image>
             <image id="customer_account_my_tags_tag_view" type="small_image">
                 <width>100</width>
@@ -85,8 +84,8 @@
             </image>
             <image id="product_swatch_image_large" type="image"/>
             <image id="product_swatch_image_medium" type="image">
-                <width>296</width>
-                <height>296</height>
+                <width>360</width>
+                <height>360</height>
             </image>
             <image id="product_swatch_image_small" type="thumbnail">
                 <width>88</width>
@@ -199,8 +198,8 @@
         <var name="product_zoom_image_size">370</var>           <!-- New Product image size used for zooming -->
 
         <var name="category_page_category_image">
-<!--            <var name="width">580</var>-->
-<!--            <var name="height">372</var>-->
+            <!-- <var name="width">580</var> -->
+            <!-- <var name="height">372</var> -->
         </var>
 
         <var name="product_image_white_borders">1</var>

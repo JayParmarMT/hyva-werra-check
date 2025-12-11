@@ -2,15 +2,13 @@
 
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Hyva\Theme\ViewModel\SvgIcons;
 use Hyva\Theme\ViewModel\Store;
 use Magento\Framework\Escaper;
@@ -23,11 +21,8 @@ use Hyva\Theme\ViewModel\ReCaptcha;
 /** @var Form $block */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
-
-/** @var HeroiconsSolid $heroiconsSolid */
-$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 /** @var SvgIcons $hyvaicons */
 $hyvaicons = $viewModels->require(SvgIcons::class);
@@ -70,56 +65,51 @@ mutation createProductReviewMutation(
 ';
 
 ?>
-<div id="review-form" tabindex="-1" class="order-1">
-    <div>
+<div class="mx-auto py-6 items-center" id="review-form" tabindex="-1">
+    <div class="card w-full px-6 py-3">
         <div class="text-xl my-3">
-            <?= /* @noEscape */ $escaper->escapeHtml(__('Write Your Own Review')) ?>
+            <?= $escaper->escapeHtml(__('Write Your Own Review')) ?>
         </div>
         <?php if ($block->getAllowWriteReviewFlag()): ?>
             <form class="review-form"
-                  id="<?= /* @noEscape */ $escaper->escapeHtmlAttr($formId) ?>"
+                  id="<?= $escaper->escapeHtmlAttr($formId) ?>"
                   @submit.prevent="submitForm()"
                   action=""
                   x-data="initReviewForm()"
                   x-defer="intersect"
             >
-                <?= /* @noEscape */ $block->getChildHtml('form_fields_before') ?>
-                <?= /* @noEscape */ $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
+                <?= $block->getChildHtml('form_fields_before') ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
                 <fieldset>
                     <legend class="text-xs">
                         <span>
-                            <?= /* @noEscape */ $escaper->escapeHtml(
-                                __("You're reviewing:")
-                            ) ?>
+                            <?= $escaper->escapeHtml(__("You're reviewing:")) ?>
                         </span>
                         <span class="font-semibold">
-                            <?= /* @noEscape */ $escaper->escapeHtml($block->getProductInfo()->getName()) ?>
+                            <?= $escaper->escapeHtml($block->getProductInfo()->getName()) ?>
                         </span>
                     </legend>
                     <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
-                        <fieldset name="rating-group">
+                        <div name="rating-group">
                             <div class="flex flex-col mt-4 mb-3">
                                 <div class="text-md <?php if ($block->getRatings()->getSize() <= 1): ?>hidden<?php endif ?>">
-                                    <?= /* @noEscape */ $escaper->escapeHtml(__('Your Rating')) ?>:
+                                    <?= $escaper->escapeHtml(__('Your Rating')) ?>:
                                 </div>
-                                <div class="mt-4">
+                                <div>
                                     <div id="product-review-table">
                                         <?php foreach ($block->getRatings() as $rating): ?>
-                                            <div class="table-row">
-                                                <label
-                                                    class="table-cell pr-6 align-middle text-left"
-                                                    id="<?= /* @noEscape */ $escaper->escapeHtml($rating->getRatingCode()) ?>_rating_label"
-                                                >
-                                                    <span>
+                                            <fieldset class="flex flex-col md:flex-row gap-y-2 gap-x-4 md:items-center mb-2">
+                                                <div>
+                                                    <legend class="inline-block my-0">
                                                         <?php if ($block->getRatings()->getSize() <= 1): ?>
-                                                            <?= /* @noEscape */ $escaper->escapeHtml(__('Your Rating')) ?>:
+                                                            <?= $escaper->escapeHtml(__('Your Rating')) ?>:
                                                         <?php else: ?>
-                                                            <?= /* @noEscape */ $escaper->escapeHtml($rating->getRatingCode()) ?>
+                                                            <?= $escaper->escapeHtml($rating->getRatingCode()) ?>
                                                         <?php endif ?>
-                                                    </span>
-                                                </label>
+                                                    </legend>
+                                                </div>
                                                 <div
-                                                    class="flex flex-row grow-0 gap-2"
+                                                    class="rating-summary grow-0 has-[:focus-visible]:outline-2 outline-primary"
                                                     x-data="{ clickedRatingId: 0 }"
                                                 >
                                                     <?php $options = $rating->getOptions(); ?>
@@ -127,49 +117,26 @@ mutation createProductReviewMutation(
                                                     foreach ($options as $option): ?>
                                                         <div
                                                             class="relative"
-                                                            @click="clickedRatingId = <?= /* @noEscape */ (int)$iterator ?> || 0"
+                                                            @click="clickedRatingId = <?= (int)$iterator ?> || 0"
                                                         >
                                                             <label
-                                                                class="rating-<?= /* @noEscape */ (int)$iterator ?> m-0 cursor-pointer text-werra-rating-non_fill"
-                                                                for="<?= /* @noEscape */ $escaper
-                                                                     ->escapeHtmlAttr(
-                                                                         $rating->getRatingCode() . '_' . $option->getValue()
-                                                                     ) ?>"
-                                                                id="<?= /* @noEscape */ $escaper
-                                                                    ->escapeHtmlAttr(
-                                                                        $rating->getRatingCode() . '_' . $option->getValue()
-                                                                    ) ?>_label"
+                                                                class="rating-<?= (int)$iterator ?> m-0 text-current"
+                                                                for="<?= $escaper->escapeHtmlAttr($rating->getRatingCode() . '_' . $option->getValue()) ?>"
                                                             >
-                                                                <span :class="<?= /* @noEscape */ (int)$iterator ?> <= clickedRatingId
-                                                                    ? 'text-werra-rating-fill'
-                                                                    : 'text-werra-rating-non_fill'"
-                                                                >
-                                                                   
-
-
-                                                                                <svg width="20" 
-                                                        class="w-6 h-6" 
-                                                        
-                                                        height="20" 
-                                                        viewBox="0 0 20 19"  class="star-icon" xmlns="http://www.w3.org/2000/svg"fill="currentColor">
-                                             <path d="M10.3099 0.5L12.555 7.40983H19.8205L13.9426 11.6803L16.1878 18.5902L10.3099 14.3197L4.43203 18.5902L6.67717 11.6803L0.799316 7.40983H8.06474L10.3099 0.5Z"/>
-                                          </svg>
-
-
-
-                                                                    
-                                                                </span>
+                                                                <?= $lucideIcons->starHtml('', 24, 24, [
+                                                                    'aria-hidden' => 'true',
+                                                                    ':class' => (int)$iterator . "<= clickedRatingId ? 'fill-current' : ''"
+                                                                ]); ?>
                                                                 <input
-                                                                    class="absolute opacity-0 bottom-0 left-0 cursor-pointer"
+                                                                    name="ratings[<?= $escaper->escapeHtmlAttr($rating->getId()) ?>]"
+                                                                    class="absolute inset-0 size-full opacity-0 cursor-pointer"
                                                                     type="radio"
                                                                     <?php if ($iterator === 1): ?>required<?php endif; ?>
-                                                                    name="ratings[<?= /* @noEscape */ $escaper->escapeHtmlAttr($rating->getId()) ?>]"
-                                                                    id="<?= /* @noEscape */ $escaper->escapeHtmlAttr($rating->getRatingCode() . '_' . $option->getValue()) ?>"
-                                                                    value="<?= /* @noEscape */ $escaper->escapeHtmlAttr($option->getId()) ?>"
+                                                                    value="<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
                                                                     <?php if ($iterator === 1): ?>
-                                                                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('1 star')) ?>"
+                                                                    aria-label="<?= $escaper->escapeHtmlAttr(__('1 star')) ?>"
                                                                     <?php else: ?>
-                                                                    aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('%1 stars', $iterator)) ?>"
+                                                                    aria-label="<?= $escaper->escapeHtmlAttr(__('%1 stars', $iterator)) ?>"
                                                                     <?php endif; ?>
                                                                 >
                                                             </label>
@@ -178,48 +145,50 @@ mutation createProductReviewMutation(
                                                         <?php $iterator++; ?>
                                                     <?php endforeach; ?>
                                                 </div>
-                                            </div>
+                                            </fieldset>
                                         <?php endforeach; ?>
                                     </div>
                                     <input type="hidden" name="validate_rating" value="">
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
                     <?php endif ?>
                     <div>
                         <div>
                             <label for="nickname_field" class="sr-only">
-                                <span><?= /* @noEscape */ $escaper->escapeHtml(__('Nickname')) ?></span>
+                                <span><?= $escaper->escapeHtml(__('Nickname')) ?></span>
                             </label>
                             <div>
                                 <input class="form-input mt-3 block w-full"
                                        required
-                                       placeholder="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Nickname') . '*') ?>" type="text"
-                                       name="nickname" id="nickname_field">
+                                       placeholder="<?= $escaper->escapeHtmlAttr(__('Nickname') . '*') ?>" type="text"
+                                       name="nickname" id="nickname_field"
+                                       autocomplete="nickname">
                             </div>
                         </div>
                         <div>
                             <label for="summary_field" class="sr-only">
-                                <span><?= /* @noEscape */ $escaper->escapeHtml(__('Summary')) ?></span>
+                                <span><?= $escaper->escapeHtml(__('Summary')) ?></span>
                             </label>
                             <div>
                                 <input class="form-input mt-3 block w-full"
                                        required
-                                       placeholder="<?= /* @noEscape */ $escaper->escapeHtml(__('Summary') . '*') ?>" type="text"
+                                       placeholder="<?= $escaper->escapeHtmlAttr(__('Summary') . '*') ?>" type="text"
                                        name="title"
-                                       id="summary_field">
+                                       id="summary_field"
+                                       autocomplete="off">
                             </div>
                         </div>
                         <div>
                             <label for="review_field" class="sr-only">
-                                <span><?= /* @noEscape */ $escaper->escapeHtml(__('Review')) ?></span>
+                                <span><?= $escaper->escapeHtml(__('Review')) ?></span>
                             </label>
                             <div>
                             <textarea class="form-input mt-3 block w-full"
                                       required
-                                      placeholder="<?= /* @noEscape */ $escaper->escapeHtml(__('Review') . '*') ?>" name="detail"
+                                      placeholder="<?= $escaper->escapeHtmlAttr(__('Review') . '*') ?>" name="detail"
                                       id="review_field" cols="5"
-                                      rows="3"></textarea>
+                                      rows="3" autocomplete="off"></textarea>
                             </div>
                         </div>
                     </div>
@@ -227,31 +196,31 @@ mutation createProductReviewMutation(
                 <div class="my-3">
                     <div>
                         <button x-show="!displaySuccessMessage" type="submit"
-                                class="btn btn-primary px-12">
-                            <span class="font-RalewayB text-[18px]">
-                                <?= /* @noEscape */ $escaper->escapeHtml(__('Submit')) ?>
+                                class="btn btn-primary">
+                            <span>
+                                <?= $escaper->escapeHtml(__('Submit Review')) ?>
                             </span>
                         </button>
                         <div class="flex flex-row justify-start items-center w-full"
                              x-show="isLoading"
                              x-cloak>
-                            <?= /* @noEscape */ $hyvaicons->renderHtml('loader', 'text-primary', 57, 57); ?>
-                            <div class="ml-4 text-primary">
-                                <?= /* @noEscape */ $escaper->escapeHtml(__('Loading...')) ?>
+                            <?= $hyvaicons->loaderHtml('', 57, 57); ?>
+                            <div class="ml-4">
+                                <?= $escaper->escapeHtml(__('Loading...')) ?>
                             </div>
                         </div>
-                        <p x-show="displaySuccessMessage"
-                           x-cloak
-                           class="text-green flex items-center">
-                            <span class="inline-block w-8 h-8 mr-3">
-                                <?= /* @noEscape */ $heroicons->checkCircleHtml('', 24, 24, ['aria-hidden' => true]); ?>
-                            </span>
-                            <?= /* @noEscape */ $escaper->escapeHtml(__('You submitted your review for moderation.')) ?>
+                        <p
+                            x-show="displaySuccessMessage"
+                            x-cloak
+                            class="text-green flex gap-4 items-center"
+                        >
+                            <?= $lucideIcons->circleCheckHtml('', 28, 28, ['aria-hidden' => true]); ?>
+                            <?= $escaper->escapeHtml(__('You submitted your review for moderation.')) ?>
                         </p>
                         <template x-if="displayErrorMessage">
                             <p class="text-red flex items-center">
                                 <span class="inline-block w-8 h-8 mr-3">
-                                    <?= /* @noEscape */ $heroicons->exclamationCircleHtml('', 24, 24, ['aria-hidden' => true]); ?>
+                                    <?= $lucideIcons->circleAlertHtml('', 24, 24, ['aria-hidden' => true]); ?>
                                 </span>
                                 <template x-for="errorMessage in errorMessages">
                                     <span x-html="errorMessage"></span>
@@ -259,8 +228,8 @@ mutation createProductReviewMutation(
                             </p>
                         </template>
                     </div>
-                    <?= /* @noEscape */ $block->getChildHtml('form_additional_after') ?>
-                    <?= /* @noEscape */ $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
+                    <?= $block->getChildHtml('form_additional_after') ?>
+                    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
                 </div>
             </form>
 
@@ -285,10 +254,10 @@ mutation createProductReviewMutation(
                         },
                         submitForm: function () {
                             // Do not remove $form. The variable is used in the recaptcha child template.
-                            const $form = document.querySelector('#<?= /* @noEscape */ $escaper->escapeJs($formId) ?>');
+                            const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
                             this.validate();
 
-                            <?= /* @noEscape */ $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
+                            <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
 
                             if (this.errors === 0) {
                                 this.placeReview();
@@ -304,9 +273,9 @@ mutation createProductReviewMutation(
                             try {
                                 ratingValue =
                                     document
-                                        .querySelector('input[name="ratings[<?= /* @noEscape */ (int)$rating->getId() ?>]"]:checked')
+                                        .querySelector('input[name="ratings[<?= (int)$rating->getId() ?>]"]:checked')
                                         .value;
-                                this.ratings[<?= /* @noEscape */ (int) $rating->getId() ?>] = btoa(ratingValue);
+                                this.ratings[<?= (int) $rating->getId() ?>] = btoa(ratingValue);
                             } catch (e) {
                                 console.log(e);
                             }
@@ -315,13 +284,10 @@ mutation createProductReviewMutation(
                             if (!(this.nickname &&
                                 this.summary &&
                                 this.review &&
-                                Object.keys(this.ratings).length === <?= /* @noEscape */ count($block->getRatings()) ?>
+                                Object.keys(this.ratings).length === <?= count($block->getRatings()) ?>
                             )) {
                                 this.setErrorMessages(
-                                    ['<?= /* @noEscape */ $escaper
-                                        ->escapeJs(
-                                            __('Please verify you\'ve entered all required information')
-                                        ) ?>']
+                                    ['<?= $escaper->escapeJs(__('Please verify you\'ve entered all required information')) ?>']
                                 );
                                 this.displayErrorMessage = true;
                                 this.errors = 1;
@@ -334,7 +300,7 @@ mutation createProductReviewMutation(
 
                             const query = `<?= /* @noEscape */ $gqlViewModel->query('create_product_review_mutation', $gqlCreateProductReviewMutation) ?>`;
                             const variables = {
-                                sku: '<?= /* @noEscape */ $escaper->escapeJs($block->getProductInfo()->getSku()) ?>',
+                                sku: '<?= $escaper->escapeJs($block->getProductInfo()->getSku()) ?>',
                                 nick: this.nickname,
                                 summary: this.summary,
                                 review: this.review,
@@ -343,9 +309,9 @@ mutation createProductReviewMutation(
                                 })
                             };
 
-                            const form = document.querySelector('#<?= /* @noEscape */ $escaper->escapeJs($formId) ?>');
+                            const form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
 
-                            const fieldName = '<?= /* @noEscape */ $recaptcha
+                            const fieldName = '<?= $recaptcha
                                 ? $escaper->escapeJs($recaptcha->getResultTokenFieldName($formId))
                                 : '' ?>';
                             const recaptchaHeader = fieldName && form && form.elements[fieldName]
@@ -356,7 +322,7 @@ mutation createProductReviewMutation(
                                 method: 'POST',
                                 headers: Object.assign({
                                     'Content-Type': 'application/json;charset=utf-8',
-                                    'Store': '<?= /* @noEscape */ $escaper->escapeJs($viewModelStore->getStoreCode()) ?>'
+                                    'Store': '<?= $escaper->escapeJs($viewModelStore->getStoreCode()) ?>'
                                 }, recaptchaHeader),
                                 credentials: 'include',
                                 body: JSON.stringify({query: query, variables: variables})
@@ -365,7 +331,7 @@ mutation createProductReviewMutation(
                                 .then(data => {
                                         this.isLoading = false;
                                         if (data.errors) {
-                                            this.setErrorMessages(['<?= /* @noEscape */ $escaper->escapeJs(__('Submitting your review failed, please try again.')) ?>']);
+                                            this.setErrorMessages(['<?= $escaper->escapeJs(__('Submitting your review failed, please try again.')) ?>']);
                                             this.displayErrorMessage = true;
                                         } else {
                                             this.displaySuccessMessage = true;
@@ -382,7 +348,7 @@ mutation createProductReviewMutation(
                 tabindex="-1"
             >
                 <div class="pb-6">
-                    <?= /* @noEscape */ $escaper->escapeHtml(
+                    <?= $escaper->escapeHtml(
                         __(
                             'Only registered users can write reviews. Please <a href="%1" class="underline">Sign in</a> or <a href="%2" class="underline">create an account</a>',
                             $block->getLoginLink(),

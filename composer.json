@@ -1,28 +1,49 @@
 {
-	"name": "meetanshi/hyva-werra",
-	"description": "N/A",
-	"require": {
-		"php": "~5.5.0|~5.6.0|~7.0.0|7.0.2|7.0.4|~7.0.6|~7.1.0|~7.2.0|~7.3.0|~7.4.0|^8.0.0|^8.1.0|^8.2.0|^8.3.0",
-		"magento/luma": "100.0.*",
-		"magento/framework": "100.0.*",
-		"hyva-themes/magento2-cms-tailwind-jit": "*"
-	},
-	"type": "magento2-theme",
-	"version": "1.0.0",
-	"license": [
-		"OSL-3.0",
-		"AFL-3.0"
-	],
-	"authors": [
-		{
-			"name": "Meetanshi",
-			"email": "help@meetanshi.com",
-			"homepage": "https://meetanshi.com"
-		}
-	],
-	"autoload": {
-		"files": [
-			"registration.php"
-		]
-	}
+    "name": "hyva-themes/magento2-default-theme",
+    "description": "Default Hyvä Theme",
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.3.0",
+        "magento/framework": ">=102.0.0",
+        "hyva-themes/magento2-base-layout-reset": "^2.0.1",
+        "hyva-themes/magento2-theme-module": ">=1.4.1",
+        "hyva-themes/magento2-email-module": "*",
+        "hyva-themes/magento2-graphql-tokens": "*",
+        "hyva-themes/magento2-graphql-view-model": ">=1.0.1",
+        "hyva-themes/magento2-order-cancellation-webapi": "^1.0.0",
+        "magento/module-catalog-rule-graph-ql": "*",
+        "magento/module-customer-graph-ql": "*",
+        "magento/module-directory-graph-ql": "*",
+        "magento/module-graph-ql": "*",
+        "magento/module-quote-graph-ql": "*"
+    },
+    "type": "magento2-theme",
+    "authors": [
+        {
+            "name": "Hyvä Themes B.V.",
+            "email": "info@hyva.io"
+        }
+    ],
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ]
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
+        "magento/magento-coding-standard": "dev-master",
+        "phpro/grumphp": "dev-master"
+    },
+    "archive": {
+        "exclude": [
+            ".gitlab"
+        ]
+    }
 }

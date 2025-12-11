@@ -1,34 +1,41 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\BlockJsDependencies;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 
 /** @var Image $block */
 /** @var Escaper $escaper */
+/** @var HyvaCsp $hyvaCsp */
+/** @var ViewModelRegistry $viewModels */
+
+$pageJsRegistry = $viewModels->require(BlockJsDependencies::class);
+$pageJsRegistry->setBlockTemplateDependency($block, 'Magento_Catalog::product/list/js/image.phtml');
 
 $hasLoadingAttribute = ($block->getCustomAttributes() ?: [])['loading'] ?? false;
 
 ?>
-<img class="object-contain <?= /* @noEscape */ $escaper->escapeHtmlAttr($block->getClass()) ?>"
-     x-data=""
-     @update-gallery-<?= /* @noEscape */ (int)$block->getProductId() ?>.window="$root.src = $event.detail"
-    <?php foreach ($block->getCustomAttributes() as $name => $value): ?>
-        <?= /* @noEscape */ $escaper->escapeHtmlAttr($name) ?>="<?= /* @noEscape */ $escaper->escapeHtmlAttr($value) ?>"
-    <?php endforeach; ?>
-    src="<?= /* @noEscape */ $escaper->escapeUrl($block->getImageUrl()) ?>"
-    <?php if (! $hasLoadingAttribute): ?>
-    loading="lazy"
+<img
+    src="<?= $escaper->escapeUrl($block->getImageUrl()) ?>"
+    width="<?= $escaper->escapeHtmlAttr($block->getWidth()) ?>"
+    height="<?= $escaper->escapeHtmlAttr($block->getHeight()) ?>"
+    alt="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>"
+    class="<?= $escaper->escapeHtmlAttr($block->getClass()) ?>"
+    <?php if (!$hasLoadingAttribute): ?>
+        loading="lazy"
     <?php endif; ?>
-    width="<?= /* @noEscape */ $escaper->escapeHtmlAttr($block->getWidth()) ?>"
-    height="<?= /* @noEscape */ $escaper->escapeHtmlAttr($block->getHeight()) ?>"
-    alt="<?= /* @noEscape */ $escaper->escapeHtmlAttr($block->getLabel()) ?>"
-    title="<?= /* @noEscape */ $escaper->escapeHtmlAttr($block->getLabel()) ?>"
-/>
+    x-data="initProductItemImage"
+    @update-gallery-<?= (int)$block->getProductId() ?>.window="updateImage"
+    <?php foreach ($block->getCustomAttributes() as $name => $value): ?>
+        <?= $escaper->escapeHtmlAttr($name) ?>="<?= $escaper->escapeHtmlAttr($value) ?>"
+    <?php endforeach; ?>
+>

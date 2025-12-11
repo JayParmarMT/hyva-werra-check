@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -49,10 +48,10 @@ $htmlInputTypes = [
 ?>
 <div class="flex flex-col sm:flex-row border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
     <label class="label text-gray-700 text-left w-full sm:w-1/2"
-           for="options_<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
-           x-html="updateOptionPrice('<?= /* @noEscape */ $escaper->escapeJs($optionId) ?>', $el)"
+           for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
+           x-html="updateOptionPrice('<?= $escaper->escapeJs($optionId) ?>', $el)"
     >
-        <span><?= /* @noEscape */ $escaper->escapeHtml($option->getTitle()) ?></span>
+        <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
         <?php if ($option->getIsRequire()): ?>
             <span class="sup text-sm">*</span>
         <?php endif; ?>
@@ -60,9 +59,9 @@ $htmlInputTypes = [
     </label>
 
     <div class="flex flex-wrap gap-y-2 sm:ml-2 text-gray-900 text-left w-full sm:w-1/2"
-          x-data="initValidateDate(<?= /* @noEscape */ (int) $optionId ?>)">
+          x-data="initValidateDate(<?= (int) $optionId ?>)">
         <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE): ?>
-            <?= /* @noEscape */ $customOptionViewModel->getDateDropdownsHtml((int) $optionId, [
+            <?= $customOptionViewModel->getDateDropdownsHtml((int) $optionId, [
                 'day' => ['class="form-select"'],
                 'month' => ['class="form-select"'],
                 'year' => ['class="form-select"'],
@@ -70,7 +69,7 @@ $htmlInputTypes = [
         <?php endif; ?>
 
         <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_TIME): ?>
-            <?= /* @noEscape */ $customOptionViewModel->getTimeDropdownsHtml((int) $optionId, [
+            <?= $customOptionViewModel->getTimeDropdownsHtml((int) $optionId, [
                 'hour' => ['class="form-select"'],
                 'minute' => ['class="form-select"'],
                 'day_part' => ['class="form-select"'],

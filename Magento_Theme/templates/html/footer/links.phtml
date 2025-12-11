@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -22,26 +21,65 @@ use Magento\Framework\View\Element\Template;
 $customer = $viewModels->require(Customer::class);
 /** @var StoreConfig $storeConfig */
 $storeConfig = $viewModels->require(StoreConfig::class);
-$cmsBlock = $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class);
-
-$enabledBlocks = [];
-for ($i = 1; $i <= 5; $i++) {
-    if ($storeConfig->getStoreConfig("mt_hyva_theme_core_design_settings/footer/top_section/top_section_{$i}/enable")) {
-        $enabledBlocks[] = $i;
-    }
-}
-
-$columns = count($enabledBlocks);
-$columns = $columns > 0 ? $columns : 1; // Ensure at least 1 column
-$gridClass = "lg:grid-cols-{$columns}";
 ?>
-<?php if ($storeConfig->getStoreConfig('mt_hyva_theme_core_design_settings/footer/top_section/enable')): ?>
-    <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 <?= /* @noEscape */ $gridClass ?> gap-6 md:gap-8 xl:gap-18 xl:col-span-2">
-        <?php foreach ($enabledBlocks as $i): ?>
-            <?php
-                $blockId = $storeConfig->getStoreConfig("mt_hyva_theme_core_design_settings/footer/top_section/top_section_{$i}/cms_block_id");
-                echo $cmsBlock->setBlockId($blockId)->toHtml();
-            ?>
-        <?php endforeach; ?>
+<div class="md:w-1/2 w-full flex flex-wrap pr-4">
+    <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 xl:col-span-2">
+        <nav aria-label="Company Menu">
+            <h2 class="text-md leading-5 font-semibold tracking-wider uppercase">
+                Company
+            </h2>
+            <ul class="mt-4">
+                <li>
+                    <a href="#" class="text-base leading-6">
+                        About
+                    </a>
+                </li>
+                <li class="mt-4">
+                    <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
+                       class="text-base leading-6">
+                        <?= $escaper->escapeHtml(__('My Account')) ?>
+                    </a>
+                </li>
+                <?php if (!$customer->customerLoggedIn()): ?>
+                    <li class="mt-4">
+                        <a href="<?= $escaper->escapeUrl($block->getUrl('sales/guest/form')) ?>"
+                           class="text-base leading-6">
+                            <?= $escaper->escapeHtml(__('Orders and Returns')) ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($storeConfig->getStoreConfig('catalog/seo/search_terms')): ?>
+                    <li class="mt-4">
+                        <a href="<?= $escaper->escapeUrl($block->getUrl('search/term/popular')) ?>"
+                           class="text-base leading-6">
+                            <?= $escaper->escapeHtml(__('Search Terms')) ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <li class="mt-4">
+                    <a href="<?= $escaper->escapeUrl($block->getUrl('contact')) ?>"
+                       class="text-base leading-6">
+                        <?= $escaper->escapeHtml(__('Contact')) ?>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav aria-label="Legal Menu">
+            <h2 class="text-md leading-5 font-semibold tracking-wider uppercase">
+                Legal
+            </h2>
+            <ul class="mt-4">
+                <li class="mt-4">
+                    <a href="#" class="text-base leading-6">
+                        Privacy
+                    </a>
+                </li>
+                <li class="mt-4">
+                    <a href="#" class="text-base leading-6">
+                        Terms and Conditions
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
-<?php endif; ?>
+</div>

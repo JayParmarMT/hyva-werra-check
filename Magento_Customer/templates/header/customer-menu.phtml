@@ -1,15 +1,14 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Magento\Customer\Block\Account\Customer;
 use Magento\Framework\Escaper;
 
@@ -17,8 +16,8 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 ?>
 
 <div
@@ -30,27 +29,25 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
     <button
         type="button"
         id="customer-menu"
-        class="text-th-primary-darker block rounded p-1 outline-offset-2"
+        class="btn bg-transparent border-transparent p-1"
         @click="open = !open"
         :aria-expanded="open ? 'true' : 'false'"
-        aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('My Account')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('My Account')) ?>"
         aria-haspopup="true"
     >
-        <?= /* @noEscape */ $heroicons->userHtml('text-th-primary-darker md:h-6 md:w-6', 28, 28, ['aria-hidden' => 'true']); ?>
+        <?= $lucideIcons->userHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
     </button>
     <nav
-        class="
-            absolute right-0 z-20 w-40 py-2 mt-2 -mr-4 px-1 overflow-auto origin-top-right rounded-sm
-            shadow-lg sm:w-48 lg:mt-3 bg-container-lighter
-        "
-        x-cloak
-        x-show="open"
+        class="z-10 absolute right-0 w-40 sm:w-48 mt-2 lg:mt-3 -me-4 py-2 px-1 rounded-md shadow-lg bg-white overflow-auto"
         aria-labelledby="customer-menu"
+        x-show="open"
+        x-transition
+        x-cloak
     >
         <?php if ($block->customerLoggedIn()): ?>
-            <?= /* @noEscape */ $block->getChildHtml('header.customer.logged.in.links') ?>
+            <?= $block->getChildHtml('header.customer.logged.in.links') ?>
         <?php else: ?>
-            <?= /* @noEscape */ $block->getChildHtml('header.customer.logged.out.links') ?>
+            <?= $block->getChildHtml('header.customer.logged.out.links') ?>
         <?php endif; ?>
     </nav>
 </div>

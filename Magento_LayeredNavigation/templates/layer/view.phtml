@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -28,9 +27,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         x-init="checkIsMobileResolution()"
         @resize.window.debounce="checkIsMobileResolution()"
         @visibilitychange.window.debounce="checkIsMobileResolution()"
-        class="block border border-container bg-container-darker p-4 md:border-0 md:bg-transparent md:py-0 md:px-0 my-6"
+        class="block border border-gray-300 bg-gray-100 p-4 md:border-0 md:bg-transparent md:py-0 md:px-0 my-6"
         role="region"
-        aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Product filters')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Product filters')) ?>"
     >
         <h2
             id="filters-heading"
@@ -45,14 +44,14 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 :aria-disabled="!isMobile"
                 :disabled="!isMobile ? '' : null"
             >
-                <span class="text-[20px] md:text-[25px] font-RalewayB text-th-primary-darker">
-                    <?= /* @noEscape */ $escaper->escapeHtml(__('Shop By')) ?>
+                <span class="text-md md:text-3xl font-medium uppercase">
+                    <?= $escaper->escapeHtml(__('Shop By')) ?>
                 </span>
                 <span
-                    class="py-1 px-1 md:hidden"
+                    class="py-1 px-1 bg-white rounded border border-gray-300 md:hidden"
                     x-ref="LayeredNavigationMobileToggleIcon"
                 >
-                    <?= /* @noEscape */ $heroicons->chevronDownHtml(
+                    <?= $heroicons->chevronDownHtml(
                         'transition-transform transform duration-300 ease-in-out',
                         24,
                         24,
@@ -67,15 +66,15 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         </h2>
         <div
             id="filters-content"
-            class="block-content filter-content hidden md:block px-4 border rounded mt-8"
+            class="block-content filter-content hidden md:block pt-4"
             :class="{ 'hidden': !blockOpen }"
         >
-            <?= /* @noEscape */ $block->getChildHtml('state') ?>
+            <?= $block->getChildHtml('state') ?>
             <a
                 href="#product-list"
                 class="sr-only focus:not-sr-only bg-blue-600 text-white px-12 py-4 text-center block rounded-sm"
             >
-                <?= /* @noEscape */ $escaper->escapeHtml(__('Skip to product list')) ?>
+                <?= $escaper->escapeHtml(__('Skip to product list')) ?>
             </a>
             <?php foreach ($block->getFilters() as $filter): ?>
                 <?php if ($filter->getItemsCount()): ?>
@@ -85,23 +84,23 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             id: $id('filter-option')
                         }"
                         x-defer="intersect"
-                        class="filter-option m-4"
+                        class="filter-option card my-4"
                     >
                         <h3 :id="`${id}-title`">
                             <button
                                 type="button"
                                 @click="open = !open"
-                                class="filter-options-title flex justify-between items-center cursor-pointer text-start hover:text-secondary-darker w-full"
-                                :class="{ '': open }"
+                                class="filter-options-title flex justify-between items-center cursor-pointer text-start border-gray-300 w-full"
+                                :class="{ 'border-b pb-4': open }"
                                 :aria-controls="`${id}-content`"
                                 :aria-expanded="open"
                             >
-                                <span class="title text-[12px] md:text-[18px] text-th-primary-darker">
-                                    <?= /* @noEscape */ $escaper->escapeHtml(__($filter->getName())) ?>
-                                    <span class="sr-only"> <?= /* @noEscape */ $escaper->escapeHtml(__('filter')) ?></span>
+                                <span class="title text-md md:text-lg font-semibold">
+                                    <?= $escaper->escapeHtml(__($filter->getName())) ?>
+                                    <span class="sr-only"> <?= $escaper->escapeHtml(__('filter')) ?></span>
                                 </span>
-                                    <span class="py-1 px-1">
-                                    <?= /* @noEscape */ $heroicons->chevronDownHtml(
+                                    <span class="py-1 px-1 rounded border border-gray-300">
+                                    <?= $heroicons->chevronDownHtml(
                                         'transition-transform transform duration-300 ease-in-out',
                                         24,
                                         24,
@@ -123,7 +122,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             </div>
                         </template>
                     </div>
-                    <div class="border-b"></div>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>

@@ -1,15 +1,14 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Hyva\Theme\ViewModel\ProductAttributes as ProductAttributes;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -19,8 +18,8 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var HeroiconsOutline $heroiconsOutline */
-$heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 /** @var Product $product */
 if (! ($product = $block->getData('product'))) {
@@ -36,11 +35,11 @@ $productName = $productAttribute->getValue($product, 'name');
 
 <button x-data="initWishlist()"
         x-defer="intersect"
-        @click.prevent="addToWishlist(<?= /* @noEscape */ (int) $productId ?>)"
-        aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Add to Wish List') . ' ' . $productName) ?>"
+        @click.prevent="addToWishlist(<?= (int) $productId ?>)"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List') . ' ' . $productName) ?>"
         type="button"
-        class="w-[48px] h-[48px] bg-th-secondary-lighter p-0 border-0 inline-flex shrink-0 items-center justify-center text-th-primary-darker hover:text-red-600"
+        class="btn p-2 rounded-full"
         data-addto="wishlist"
 >
-    <?= /* @noEscape */ $heroiconsOutline->heartHtml('w-6 h-6', 20, 20, ['aria-hidden' => 'true']) ?>
+    <?= $lucideIcons->heartHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
 </button>

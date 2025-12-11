@@ -1,21 +1,25 @@
 <?xml version="1.0"?>
-
-<page
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
->
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="header-content">
-            <block
-                name="header.store-language-switcher"
-                as="store-language-switcher"
-                template="Magento_Store::header/languages.phtml"
+        <referenceBlock name="footer-content">
+            <block name="footer-column-store"
+                   template="Magento_Theme::html/footer/column.phtml"
+                   after="-"
             >
-                <arguments>
-                    <argument name="show_label" xsi:type="boolean">true</argument>
-                </arguments>
+                <block name="store-switcher"
+                       template="Magento_Store::switch/stores.phtml"
+                />
+                <block name="store-language-switcher"
+                       template="Magento_Store::switch/languages.phtml"
+                />
             </block>
         </referenceBlock>
-        <referenceBlock name="store-language-switcher" remove="true"/>
     </body>
 </page>

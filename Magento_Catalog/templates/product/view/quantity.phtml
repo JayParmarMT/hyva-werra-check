@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -65,9 +64,9 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
             }
 
             return {
-                qty: <?= /* @noEscape */ /** @noEscape */ $defaultQty ?>,
+                qty: <?= /** @noEscape */ $defaultQty ?>,
                 itemId: (new URLSearchParams(window.location.search)).get('id') || findPathParam('id'),
-                productId: '<?= /* @noEscape */ (int)$product->getId() ?>',
+                productId: '<?= (int)$product->getId() ?>',
                 <?php /* populate the qty when editing a product from the cart */ ?>
                 onGetCartData: function onGetCartData(data, $dispatch) {
                     const cart = data && data.data && data.data.cart;
@@ -84,64 +83,39 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
             };
         }
     </script>
-    <div x-data="initQtyField()" class="btn bg-th-secondary-lighter mt-sticky-qty"
-        x-init="$dispatch('update-qty-<?= /* @noEscape */ (int)$product->getId() ?>', qty)"
+    <div x-data="initQtyField()"
+        x-init="$dispatch('update-qty-<?= (int)$product->getId() ?>', qty)"
     >
         <?php if ($product->isSaleable()): ?>
-            <div x-data="initQtyField()"
-     x-init="$dispatch('update-qty-<?= /* @noEscape */ (int)$product->getId() ?>', qty)"
-     class="flex items-center"
->
-    <?php if ($product->isSaleable()): ?>
-        <label for="qty[<?= /* @noEscape */ (int)$product->getId() ?>]" class="sr-only">
-            <?= /* @noEscape */ $escaper->escapeHtml(__('Quantity')) ?>
-        </label>
-
-        <!-- Minus Button -->
-        <button type="button"
-                @click="if (qty > 1) qty--; $dispatch('update-qty-<?= /* @noEscape */ (int)$product->getId() ?>', qty)"
-                class="text-[20px] py-1 "
-        ><svg width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21.5835 13H5.03809" stroke="#666666" stroke-width="1.5"/>
-</svg>
-</button>
-
-        <!-- Quantity Input -->
-        <input name="qty"
-               @private-content-loaded.window="onGetCartData($event.detail, $dispatch)"
-               id="qty[<?= /* @noEscape */ (int)$product->getId() ?>]"
-               form="product_addtocart_form"
-               <?php if ($stockItemViewModel->isQtyDecimal($product)): ?>
-                   type="text"
-                   pattern="[0-9]+(\.[0-9]{1,<?= /* @noEscape */ /** @noEscape */ $maxSalesQtyLength ?>})?"
-                   inputmode="decimal"
-               <?php else: ?>
-                   type="number"
-                   pattern="[0-9]{0,<?= /* @noEscape */ /** @noEscape */ $maxSalesQtyLength ?>}"
-                   inputmode="numeric"
-                   <?php if ($minSalesQty): ?>min="<?= /* @noEscape */ /** @noEscape */ $minSalesQty ?>"<?php endif; ?>
-                   <?php if ($maxSalesQty): ?>max="<?= /* @noEscape */ /** @noEscape */ $maxSalesQty ?>"<?php endif; ?>
-                   <?php if ($step): ?>step="<?= /* @noEscape */ /** @noEscape */ $step ?>"<?php endif; ?>
-               <?php endif; ?>
-               :value="qty"
-               value="<?= /* @noEscape */ $block->getProductDefaultQty() * 1 ?>"
-               class=" py-2 w-20 text-center invalid:ring-2 invalid:ring-red-500"
-               x-model.number="qty"
-               @input="$dispatch('update-qty-<?= /* @noEscape */ (int)$product->getId() ?>', qty)"
-        />
-
-        <!-- Plus Button -->
-        <button type="button"
-                @click="qty++; $dispatch('update-qty-<?= /* @noEscape */ (int)$product->getId() ?>', qty)"
-                class="text-[20px] py-1 "
-        ><svg width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13.312 4.72729V21.2727" stroke="#666666" stroke-width="1.5"/>
-<path d="M21.5835 13H5.03809" stroke="#666666" stroke-width="1.5"/>
-</svg>
-</button>
-    <?php endif; ?>
-</div>
-
+            <div class="mr-2">
+                <label for="qty[<?= (int)$product->getId() ?>]"
+                    class="sr-only"
+                >
+                    <?= $escaper->escapeHtml(__('Quantity')) ?>
+                </label>
+                <input name="qty"
+                    @private-content-loaded.window="onGetCartData($event.detail, $dispatch)"
+                    id="qty[<?= (int)$product->getId() ?>]"
+                    form="product_addtocart_form"
+                    <?php if ($stockItemViewModel->isQtyDecimal($product)): ?>
+                    type="text"
+                    pattern="[0-9]+(\.[0-9]{1,<?= /** @noEscape */ $maxSalesQtyLength ?>})?"
+                    inputmode="decimal"
+                    <?php else: ?>
+                    type="number"
+                    pattern="[0-9]{0,<?= /** @noEscape */ $maxSalesQtyLength ?>}"
+                    inputmode="numeric"
+                    <?php if ($minSalesQty): ?>min="<?= /** @noEscape */ $minSalesQty ?>"<?php endif; ?>
+                    <?php if ($maxSalesQty): ?>max="<?= /** @noEscape */ $maxSalesQty ?>"<?php endif; ?>
+                    <?php if ($step): ?>step="<?= /** @noEscape */ $step ?>"<?php endif; ?>
+                    <?php endif; ?>
+                    :value="qty"
+                    value="<?= $block->getProductDefaultQty() * 1 ?>"
+                    class="form-input px-2 py-2 w-20 text-center invalid:ring-2 invalid:ring-red-500"
+                    x-model.number="qty"
+                    @input="$dispatch('update-qty-<?= (int)$product->getId() ?>', qty)"
+                >
+            </div>
         <?php endif; ?>
     </div>
 <?php endif; ?>

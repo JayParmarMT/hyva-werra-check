@@ -920,27 +920,27 @@
 
         switch (displayScore) {
             case 0:
-                strengthLabel = "<?= /* @noEscape */ $escaper->escapeJs('No Password') ?>";
+                strengthLabel = "<?= $escaper->escapeJs('No Password') ?>";
                 className = 'password-none';
                 break;
 
             case 1:
-                strengthLabel = "<?= /* @noEscape */ $escaper->escapeJs('Weak') ?>";
+                strengthLabel = "<?= $escaper->escapeJs('Weak') ?>";
                 className = 'password-weak';
                 break;
 
             case 2:
-                strengthLabel = "<?= /* @noEscape */ $escaper->escapeJs('Medium') ?>";
+                strengthLabel = "<?= $escaper->escapeJs('Medium') ?>";
                 className = 'password-medium';
                 break;
 
             case 3:
-                strengthLabel = "<?= /* @noEscape */ $escaper->escapeJs('Strong') ?>";
+                strengthLabel = "<?= $escaper->escapeJs('Strong') ?>";
                 className = 'password-strong';
                 break;
 
             case 4:
-                strengthLabel = "<?= /* @noEscape */ $escaper->escapeJs('Very Strong') ?>";
+                strengthLabel = "<?= $escaper->escapeJs('Very Strong') ?>";
                 className = 'password-very-strong';
                 break;
         }

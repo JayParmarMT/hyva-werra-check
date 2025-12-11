@@ -1,15 +1,14 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -17,22 +16,24 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+$buttonLabel = $block->getData('is_cart_configure')
+    ? __('Update item')
+    : __('Add to Cart');
 ?>
 
-<button type="submit"
-        form="product_addtocart_form"
-        title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
-        class="mt-sticky-btn btn btn-primary w-full py-4 font-RalewayB text-[18px]"
-        id="product-addtocart-button"
-        data-addto="cart"
+<button
+    type="submit"
+    form="product_addtocart_form"
+    aria-label="<?= $escaper->escapeHtmlAttr($buttonLabel) ?>"
+    class="btn btn-primary"
+    id="product-addtocart-button"
+    data-addto="cart"
 >
-    
-    <span><?= /* @noEscape */ $block->getData('is_cart_configure') ?
-            $escaper->escapeHtml(__('Update item')) :
-            $escaper->escapeHtml(__('Add to Cart')) ?>
-    </span>
+    <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+    <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml($buttonLabel) ?></span>
 </button>
 
-<?= /* @noEscape */ $block->getChildHtml('', true) ?>
+<?= $block->getChildHtml('', true) ?>

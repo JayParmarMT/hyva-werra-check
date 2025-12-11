@@ -1,103 +1,72 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
 
-
 use Magento\Theme\Block\Html\Breadcrumbs;
 use Magento\Framework\Escaper;
-use Hyva\Theme\ViewModel\HeroiconsSolid;
-use Meetanshi\HyvaWerra\ViewModel\Catalog\Listing;
-use Magento\Framework\Registry;
-use Magento\Store\Model\StoreManagerInterface;
-   
+
 /** @var Escaper $escaper */
 /** @var Breadcrumbs $block */
 /** @var array[] $crumbs */
-/** @var HeroiconsSolid $heroiconsSolid */
 
-$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
-$listingModel = $viewModels->require(Listing::class);
+if (!$crumbs && !is_array($crumbs)) {
+    return '';
+}
 
-$actionName = $block->getRequest()->getFullActionName();
+// The rendering of the application/ld+json BreadcrumbList can be disabled by setting this flag in layout XML
+$skipLinkedDataJsonSchema = $block->getData('skip_ld_json_schema');
+$schemaBreadcrumbs = [];
+$crumbsCount = 1;
+$currentPageUrl = $block->getUrl('', ['_current' => true, '_use_rewrite' => true]);
 ?>
-<?php
-if ($actionName == 'catalog_category_view') {
-    $backgroundUrl = $listingModel->getCategoryImgUrl();
-    if ($crumbs && is_array($crumbs)) {
-        $categoryName = '';
-        foreach ($crumbs as $crumb => $crumbData) {
-            if ($crumbData['last'] == 'true') {
-                $categoryName = $crumbData['label'];
-            }
-        }
-    }?>
-<nav class="breadcrumbs bg-container-lighter shadow-sm" aria-label="Breadcrumb">
-    <div class="relative">
-        <img src="<?= /* @noEscape */ $backgroundUrl ?>" height="300px" width="1920px" alt="<?= /* @noEscape */ $categoryName; ?>" class="w-full h-[200px] sm:h-[300px] object-cover">
 
-        <!-- Overlay content centered on the image -->
-        <div class="absolute inset-0 flex flex-col items-center justify-center">
-            <!-- Category Name -->
-            <h1 class="mb-2 text-th-primary-darker text-[20px] sm:text-[30px] lg:text-[40px] font-RalewayB"><?= /* @noEscape */ $categoryName; ?></h1>
-
-            <!-- Breadcrumbs -->
-            <div class="flex space-x-2">
-                <?php foreach ($crumbs as $crumbName => $crumbInfo): ?>
-                    <?php if (!$crumbInfo['first'] && !$crumbInfo['last']): ?>
-                        <span aria-hidden="true" class="separator text-th-primary-darker  text-[12px] uppercase">-</span>
-                    <?php endif; ?>
-
-                    <?php if ($crumbInfo['link']): ?>
-                        <a href="<?= /* @noEscape */ $escaper->escapeUrl($crumbInfo['link']) ?>"
-                           class="no-underline hover:underline text-th-primary-darker text-[12px] uppercase"
-                           title="<?= /* @noEscape */ $escaper->escapeHtmlAttr($crumbInfo['title']) ?>"
-                        ><?= /* @noEscape */ $escaper->escapeHtml($crumbInfo['label']) ?></a>
-                    <?php elseif ($crumbInfo['last']): ?>
-                        
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
-</nav>
-
-    <?php
-    
-} elseif ($crumbs && is_array($crumbs)) { ?>
-<nav class="breadcrumbs bg-container-lighter shadow-sm" aria-label="Breadcrumb">
+<nav class="breadcrumbs bg-surface shadow-sm" aria-label="Breadcrumb">
     <div class="container">
-        <ol class="items list-reset py-4 md:py-8 rounded flex flex-wrap text-primary-lighter text-sm">
+        <ol class="items list-reset py-4 rounded flex flex-wrap text-grey text-sm">
             <?php foreach ($crumbs as $crumbName => $crumbInfo): ?>
-                <li class="item flex <?= /* @noEscape */ $escaper->escapeHtmlAttr($crumbName) ?>">
+                <li class="item flex <?= $escaper->escapeHtmlAttr($crumbName) ?>">
                 <?php if (!$crumbInfo['first']): ?>
-                    <span aria-hidden="true" class="separator text-primary-lighter px-2">
-                        <?= /* @noEscape */ $heroiconsSolid->chevronRightHtml("flex self-center h-5 w-5", 25, 25, ['aria-hidden' => 'true']) ?>
-                            
-                    </span>
+                    <span aria-hidden="true" class="separator text-fg-secondary px-2">/</span>
                 <?php endif; ?>
                 <?php if ($crumbInfo['link']): ?>
-                    <a href="<?= /* @noEscape */ $escaper->escapeUrl($crumbInfo['link']) ?>"
-                       class="no-underline"
-                       title="<?= /* @noEscape */ $escaper->escapeHtmlAttr($crumbInfo['title']) ?>"
-                    ><?= /* @noEscape */ $escaper->escapeHtml($crumbInfo['label']) ?></a>
+                    <a
+                        href="<?= $escaper->escapeUrl($crumbInfo['link']) ?>"
+                        <?php if ($crumbInfo['title']): ?>
+                            aria-label="<?= $escaper->escapeHtmlAttr($crumbInfo['title']) ?>"
+                        <?php endif; ?>
+                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php elseif ($crumbInfo['last']): ?>
-                    <span
-                       class="text-primary-lighter"
-                       aria-current="page"
-                    ><?= /* @noEscape */ $escaper->escapeHtml($crumbInfo['label']) ?></span>
+                    <a
+                        href="<?= $escaper->escapeUrl($block->getUrl('', ['_current' => true, '_use_rewrite' => true])) ?>"
+                        class="text-fg-secondary"
+                        aria-current="page"
+                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php else: ?>
-                    <?= /* @noEscape */ $escaper->escapeHtml($crumbInfo['label']) ?>
+                    <?= $escaper->escapeHtml($crumbInfo['label']) ?>
                 <?php endif; ?>
                 </li>
-            <?php endforeach; ?>
+                <?php if (! $skipLinkedDataJsonSchema) {
+                    $schemaBreadcrumbs[] = [
+                        "@type" => "ListItem",
+                        "position" => $crumbsCount,
+                        "item" => [
+                            "@id" => $crumbInfo['last'] ? $currentPageUrl : $crumbInfo['link'],
+                            "name" => $crumbInfo['label']
+                        ]
+                    ];
+                } ?>
+            <?php $crumbsCount++; endforeach ?>
         </ol>
     </div>
 </nav>
-<?php } ?>
 
+<?php if (! $skipLinkedDataJsonSchema): ?>
+    <script type="application/ld+json">
+        { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": <?= /* @noEscape */ json_encode($schemaBreadcrumbs) ?> }
+    </script>
+<?php endif; ?>

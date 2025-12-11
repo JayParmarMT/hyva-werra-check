@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
@@ -223,7 +222,7 @@ $options = $block->decorateArray($block->getOptions());
         }
     </script>
     <h2 class="text-gray-900 text-xl title-font font-medium mb-4">
-        <?= /* @noEscape */ $escaper->escapeHtml(__('Customizable Options')) ?>:
+        <?= $escaper->escapeHtml(__('Customizable Options')) ?>:
     </h2>
     <div x-data="initOptions()"
          x-init="
@@ -233,7 +232,7 @@ $options = $block->decorateArray($block->getOptions());
          x-bind="eventListeners"
          class="mb-6">
     <?php foreach ($options as $option):?>
-        <?= /* @noEscape */ $block->getOptionHtml($option) ?>
+        <?= $block->getOptionHtml($option) ?>
     <?php endforeach; ?>
     </div>
 <?php endif; ?>

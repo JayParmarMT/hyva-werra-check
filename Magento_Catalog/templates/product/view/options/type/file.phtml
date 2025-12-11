@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -39,10 +38,10 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
 ?>
 <div class="flex flex-col sm:flex-row border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
     <label class="label text-gray-700 text-left w-full sm:w-1/2"
-           for="options_<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>_text"
-           x-html="updateOptionPrice('<?= /* @noEscape */ $escaper->escapeJs($optionId) ?>', $el)"
+           for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>_text"
+           x-html="updateOptionPrice('<?= $escaper->escapeJs($optionId) ?>', $el)"
     >
-        <span><?= /* @noEscape */ $escaper->escapeHtml($option->getTitle()) ?></span>
+        <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
         <?php if ($option->getIsRequire()): ?>
             <span class="sup text-sm">*</span>
         <?php endif; ?>
@@ -52,7 +51,7 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
     <?php if ($fileExists): ?>
     <div class="ml-2 text-gray-900 text-left w-full sm:w-1/2">
         <span class="<?= /* @noEscape */ $fileNamed ?> inline-block my-2 mr-2">
-            <?= /* @noEscape */ $escaper->escapeHtml($fileInfo->getTitle()) ?>
+            <?= $escaper->escapeHtml($fileInfo->getTitle()) ?>
         </span>
         <a href="#"
            class="btn btn-secondary inline-block"
@@ -67,67 +66,67 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                 document.getElementById('<?= /* @noEscape */ $fileName ?>-hidden')
                     .dispatchEvent(new Event('image-removed'));"
         >
-            <?= /* @noEscape */ $escaper->escapeHtml(__('Change')) ?>
+            <?= $escaper->escapeHtml(__('Change')) ?>
         </a>
     </div>
     <?php endif; ?>
-    <div class="sm:ml-2 text-gray-900 text-left w-full sm:w-1/2 <?= /* @noEscape */ $fileExists ? 'hidden' : ''?>"
+    <div class="sm:ml-2 text-gray-900 text-left w-full sm:w-1/2 <?= $fileExists ? 'hidden' : ''?>"
          id="input-box-<?= /* @noEscape */ $fileName ?>"
     >
         <input type="file"
                name="<?= /* @noEscape */ $fileName ?>"
                id="<?= /* @noEscape */ $fileName ?>"
                class="product-custom-option form-file w-full"
-            <?= /* @noEscape */ $fileExists ? 'disabled' : '' ?>
+            <?= $fileExists ? 'disabled' : '' ?>
             <?php if ($option->getIsRequire()): ?>
                 required
-                oninvalid="this.setCustomValidity('<?= /* @noEscape */ $escaper
+                oninvalid="this.setCustomValidity('<?= $escaper
                     ->escapeHtmlAttr(__("Please select a file.")) ?>')"
                 oninput="this.setCustomValidity('')"
             <?php endif; ?>
-               data-price-amount="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionPrice) ?>"
-               data-price-type="<?= /* @noEscape */ $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
-               data-option-id="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
-               x-ref="option-<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
+               data-price-amount="<?= $escaper->escapeHtmlAttr($optionPrice) ?>"
+               data-price-type="<?= $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
+               data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+               x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
                x-on:change="updateCustomOptionValue(
                     $dispatch,
-                    '<?= /* @noEscape */ $escaper->escapeJs($optionId) ?>',
+                    '<?= $escaper->escapeJs($optionId) ?>',
                     $event.target
                 )"
-        />
+        >
         <input type="hidden" name="<?= /* @noEscape */ $fieldNameAction ?>"
                id="<?= /* @noEscape */ $fileName ?>-hidden"
                class="product-custom-option hidden-form-file"
-               data-price-amount="<?= /* @noEscape */ $escaper->escapeHtmlAttr($option->getPrice()) ?>"
-               data-price-type="<?= /* @noEscape */ $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
-               data-option-id="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
+               data-price-amount="<?= $escaper->escapeHtmlAttr($option->getPrice()) ?>"
+               data-price-type="<?= $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
+               data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
                value="<?= /* @noEscape */ $fieldValueAction ?>"
                @image-removed="$event.target.value = 'save_new'; updateCustomOptionValue(
                     $dispatch,
-                    '<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>',
+                    '<?= $escaper->escapeHtmlAttr($optionId) ?>',
                     $event.target
                 )"
-        />
+        >
         <?php if ($option->getFileExtension()): ?>
             <p class="my-2 text-sm">
-                <?= /* @noEscape */ $escaper->escapeHtml(__('Compatible file extensions to upload')) ?>:
-                <strong><?= /* @noEscape */ $escaper->escapeHtml($option->getFileExtension()) ?></strong>
+                <?= $escaper->escapeHtml(__('Compatible file extensions to upload')) ?>:
+                <strong><?= $escaper->escapeHtml($option->getFileExtension()) ?></strong>
             </p>
         <?php endif; ?>
         <?php if ($option->getImageSizeX() > 0): ?>
             <p class="my-2 text-sm">
-                <?= /* @noEscape */ $escaper->escapeHtml(__('Maximum image width')) ?>: <strong><?= /* @noEscape */ (int)$option->getImageSizeX()
-                ?> <?= /* @noEscape */ $escaper->escapeHtml(__('px.')) ?></strong>
+                <?= $escaper->escapeHtml(__('Maximum image width')) ?>: <strong><?= (int)$option->getImageSizeX()
+                ?> <?= $escaper->escapeHtml(__('px.')) ?></strong>
             </p>
         <?php endif; ?>
         <?php if ($option->getImageSizeY() > 0): ?>
             <p class="my-2 text-sm">
-                <?= /* @noEscape */ $escaper->escapeHtml(__('Maximum image height')) ?>: <strong><?= /* @noEscape */ (int)$option->getImageSizeY()
-                ?> <?= /* @noEscape */ $escaper->escapeHtml(__('px.')) ?></strong>
+                <?= $escaper->escapeHtml(__('Maximum image height')) ?>: <strong><?= (int)$option->getImageSizeY()
+                ?> <?= $escaper->escapeHtml(__('px.')) ?></strong>
             </p>
         <?php endif; ?>
     </div>
-    <?= /* @noEscape */ $fileExists ?
+    <?= $fileExists ?
         /* @noEscape */ $secureRenderer->renderStyleAsTag(
             'display:none',
             '#input-box-' . /* @noEscape */ $fileName

@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -38,17 +37,13 @@ if (!$product) {
 $mailtoUrl = $sendFriendViewModel->getEmailToFriendUrl($product);
 ?>
 <?php if ($sendFriendViewModel->canEmailToFriend()): ?>
-    <a href="<?= /* @noEscape */ $escaper->escapeUrl($mailtoUrl) ?>"
-       title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Email to a Friend')) ?>"
-       aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Email to a Friend')) ?>"
-       class="mailto friend w-[48px] h-[48px] p-0 border-0 inline-flex
+    <a href="<?= $escaper->escapeUrl($mailtoUrl) ?>"
+       title="<?= $escaper->escapeHtmlAttr(__('Email to a Friend')) ?>"
+       aria-label="<?= $escaper->escapeHtmlAttr(__('Email to a Friend')) ?>"
+       class="mailto friend rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex
        items-center justify-center text-gray-500 hover:text-blue-600 ml-2"
     >
-        <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="1.47949" y="0.5" width="47" height="47" rx="23.5" fill="white"/>
-<rect x="1.47949" y="0.5" width="47" height="47" rx="23.5" stroke="currentColor"/>
-<path d="M21.4966 25.3915C21.7048 24.9727 21.822 24.5001 21.822 23.9998C21.822 23.4996 21.7048 23.0269 21.4966 22.6082M21.4966 25.3915C20.9895 26.411 19.9428 27.1109 18.7337 27.1109C17.0282 27.1109 15.6455 25.7181 15.6455 23.9998C15.6455 22.2816 17.0282 20.8887 18.7337 20.8887C19.9428 20.8887 20.9895 21.5886 21.4966 22.6082M21.4966 25.3915L27.2945 28.8304M21.4966 22.6082L27.2945 19.1693M27.2945 28.8304C27.0862 29.2492 26.969 29.7218 26.969 30.2221C26.969 31.9403 28.3517 33.3332 30.0573 33.3332C31.7629 33.3332 33.1455 31.9403 33.1455 30.2221C33.1455 28.5038 31.7629 27.1109 30.0573 27.1109C28.8483 27.1109 27.8015 27.8109 27.2945 28.8304ZM27.2945 19.1693C27.8015 20.1888 28.8483 20.8887 30.0573 20.8887C31.7629 20.8887 33.1455 19.4958 33.1455 17.7776C33.1455 16.0594 31.7629 14.6665 30.0573 14.6665C28.3517 14.6665 26.969 16.0594 26.969 17.7776C26.969 18.2779 27.0862 18.7505 27.2945 19.1693Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-        <span class="sr-only"><?= /* @noEscape */ $escaper->escapeHtml(__('Email to a Friend')) ?></span>
+        <?= $heroicons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+        <span class="sr-only"><?= $escaper->escapeHtml(__('Email to a Friend')) ?></span>
     </a>
 <?php endif; ?>

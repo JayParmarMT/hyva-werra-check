@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -18,7 +17,7 @@ $uniqueId = '_' . uniqid();
 $additionalOptions = ['page' => 'p'];
 ?>
 <script>
-    function initToolbar<?= /* @noEscape */ /** @noEscape */  $uniqueId ?>() {
+    function initToolbar<?= /** @noEscape */  $uniqueId ?>() {
         return {
             options: <?= /* @noEscape */ $block->getWidgetOptionsJson($additionalOptions) ?>.productListToolbarForm || {},
             getUrlParams: function () {
@@ -82,17 +81,17 @@ $additionalOptions = ['page' => 'p'];
     }
 </script>
 <?php if ($block->getCollection()->getSize()): ?>
-    <div x-data="initToolbar<?= /* @noEscape */ /** @noEscape */ $uniqueId ?>()"
+    <div x-data="initToolbar<?= /** @noEscape */ $uniqueId ?>()"
          class="toolbar toolbar-products grid grid-cols-4 sm:grid-cols-8 md:grid-cols-4
             lg:grid-cols-8  grid-flow-row gap-2 items-center">
         <?php if ($block->getIsBottom()): ?>
-            <?= /* @noEscape */ /** @noEscape */  $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
-            <?= /* @noEscape */ $block->getPagerHtml() ?>
-            <?= /* @noEscape */ /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+            <?= /** @noEscape */  $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+            <?= $block->getPagerHtml() ?>
+            <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
         <?php else: ?>
             <?php if ($block->isExpanded()): ?>
-                <?= /* @noEscape */ /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
-                <?= /* @noEscape */ /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
             <?php endif ?>
         <?php endif ?>
     </div>

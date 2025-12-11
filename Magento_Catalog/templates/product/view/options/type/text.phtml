@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -35,10 +34,10 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
 
 <div class="flex flex-col sm:flex-row border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
     <label class="label text-gray-700 text-left w-full sm:w-1/2"
-           for="options_<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>_text"
-           x-html="updateOptionPrice('<?= /* @noEscape */ $escaper->escapeJs($optionId) ?>', $el)"
+           for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>_text"
+           x-html="updateOptionPrice('<?= $escaper->escapeJs($optionId) ?>', $el)"
     >
-        <span><?= /* @noEscape */ $escaper->escapeHtml($option->getTitle()) ?></span>
+        <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
         <?php if ($option->getIsRequire()): ?>
             <span class="sup text-sm">*</span>
         <?php endif; ?>
@@ -48,48 +47,48 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
     <div class="sm:ml-2 text-gray-900 text-left w-full sm:w-1/2">
         <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_FIELD): ?>
             <input type="text"
-                   id="options_<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>_text"
+                   id="options_<?= $escaper->escapeHtmlAttr($optionId) ?>_text"
                    class="product-custom-option form-input w-full"
-                   name="options[<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>]"
-                   value="<?= /* @noEscape */ $escaper->escapeHtml($block->getDefaultValue()) ?>"
+                   name="options[<?= $escaper->escapeHtmlAttr($optionId) ?>]"
+                   value="<?= $escaper->escapeHtml($block->getDefaultValue()) ?>"
                    <?php if ($option->getMaxCharacters()): ?>
-                   maxlength="<?= /* @noEscape */ (int)$option->getMaxCharacters() ?>"
+                   maxlength="<?= (int)$option->getMaxCharacters() ?>"
                    <?php endif; ?>
-                   <?= /* @noEscape */ $option->getIsRequire() ? 'required' : '' ?>
-                   data-price-amount="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionPrice) ?>"
-                   data-price-type="<?= /* @noEscape */ $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
-                   data-option-id="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
-                   x-ref="option-<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
+                   <?= $option->getIsRequire() ? 'required' : '' ?>
+                   data-price-amount="<?= $escaper->escapeHtmlAttr($optionPrice) ?>"
+                   data-price-type="<?= $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
+                   data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
                    x-on:input="updateCustomOptionValue(
                         $dispatch,
-                        '<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>',
+                        '<?= $escaper->escapeHtmlAttr($optionId) ?>',
                         $event.target
                    )"
-            />
+            >
         <?php elseif ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_AREA): ?>
-            <textarea id="options_<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>_text"
+            <textarea id="options_<?= $escaper->escapeHtmlAttr($optionId) ?>_text"
                       class="product-custom-option form-textarea"
                       <?php if ($option->getMaxCharacters()): ?>
-                      maxlength="<?= /* @noEscape */ (int)$option->getMaxCharacters() ?>"
+                      maxlength="<?= (int)$option->getMaxCharacters() ?>"
                       <?php endif; ?>
-                      <?= /* @noEscape */ $option->getIsRequire() ? 'required' : '' ?>
-                      name="options[<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>]"
+                      <?= $option->getIsRequire() ? 'required' : '' ?>
+                      name="options[<?= $escaper->escapeHtmlAttr($optionId) ?>]"
                       rows="5"
                       cols="25"
-                      data-price-amount="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionPrice) ?>"
-                      data-price-type="<?= /* @noEscape */ $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
-                      data-option-id="<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
-                      x-ref="option-<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>"
+                      data-price-amount="<?= $escaper->escapeHtmlAttr($optionPrice) ?>"
+                      data-price-type="<?= $escaper->escapeHtmlAttr($option->getPriceType()) ?>"
+                      data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                      x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
                       x-on:input="updateCustomOptionValue(
                         $dispatch,
-                        '<?= /* @noEscape */ $escaper->escapeHtmlAttr($optionId) ?>',
+                        '<?= $escaper->escapeHtmlAttr($optionId) ?>',
                         $event.target
                    )"
-            ><?= /* @noEscape */ $escaper->escapeHtml($block->getDefaultValue()) ?></textarea>
+            ><?= $escaper->escapeHtml($block->getDefaultValue()) ?></textarea>
         <?php endif; ?>
         <?php if ($option->getMaxCharacters()): ?>
             <p class="note text-sm">
-                <?= /* @noEscape */ $escaper->escapeHtml(__('Maximum %1 characters', $option->getMaxCharacters())) ?>
+                <?= $escaper->escapeHtml(__('Maximum %1 characters', $option->getMaxCharacters())) ?>
             </p>
         <?php endif; ?>
     </div>

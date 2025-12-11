@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -30,87 +29,81 @@ $product = $productViewModel->getProduct();
 $productType = $product->getTypeId();
 
 ?>
-<div class="w-full order-3">
-    <div class="flex">
-        <?= /* @noEscape */ $block->getChildHtml('product.info.review') ?>
+<div class="card mb-6">
+    <?= $block->getChildHtml('product.info.title') ?>
+
+    <div class="my-2 flex">
+        <?= $block->getChildHtml('product.info.review') ?>
+    </div>
+
+    <?php if ($shortDescription = $productViewModel->getShortDescription()): ?>
+        <div class="mb-4 leading-relaxed product-description prose"><?= /* @noEscape */ $shortDescription ?></div>
+    <?php endif; ?>
+
+    <div class="flex flex-col sm:flex-row justify-between my-4">
+        <div class="inline-flex flex-wrap items-center gap-x-6">
+            <?= $block->getChildHtml("product.info.stockstatus") ?>
+            <?= $block->getChildHtml("product.info.stockqty") ?>
+        </div>
+        <?= $block->getChildHtml("alert.urls") ?>
     </div>
 
     <dl id="product-details">
         <?php foreach ($block->getAttributes() as $attributeConfig):
             $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig); ?>
             <?php if ($value = $attribute['value'] ?? null): ?>
-                <div class="flex py-1 attribute-<?= /* @noEscape *//* @noEscape */ $attribute['code'] ?: "" ?>">
-                    <dt class="w-auto text-left text-th-primary-darker product-detail-label">
-                        <?= /* @noEscape */ $escaper->escapeHtml($attribute['label']) ?> <span> : </span> 
+                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b attribute-<?=/* @noEscape */ $attribute['code'] ?: "" ?>">
+                    <dt class="w-1/2 text-left text-gray-700 product-detail-label">
+                        <?= $escaper->escapeHtml($attribute['label']) ?>
                     </dt>
-                    <dd class="w-auto ml-2 text-left text-th-primary-darker product-detail-value">
-                        <?= /* @noEscape */ $escaper->escapeHtml($value) ?>
+                    <dd class="w-1/2 ml-2 text-left text-gray-900 product-detail-value">
+                        <?= $escaper->escapeHtml($value) ?>
                     </dd>
                 </div>
             <?php endif ?>
         <?php endforeach; ?>
     </dl>
-    <div class="border-t my-4"></div>
-    <?= /* @noEscape */ $block->getChildHtml('product.info.form') ?>
 
-        <div class="flex flex-col sm:flex-row md:items-end my-4">
+    <?= $block->getChildHtml('product.info.form') ?>
 
-            <?php if ($productType === 'bundle'): ?>
-                <span class="sr-only">
-                    <?= /* @noEscape */ $escaper->escapeHtml(__('The price depends on the chosen options')) ?>
-                </span>
-            <?php endif; ?>
+    <div class="flex flex-col sm:flex-row items-end my-4">
 
-            <div role="group" aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr('Price') ?>">
-                <?= /* @noEscape */ $block->getChildHtml("product.info.price") ?>
-            </div>
+        <?php if ($productType === 'bundle'): ?>
+            <span class="sr-only">
+                <?= $escaper->escapeHtml(__('The price depends on the chosen options')) ?>
+            </span>
+        <?php endif; ?>
 
-            
-
-            <div class="flex mt-4 md:justify-end md:ml-auto sm:mt-0">
-                <?= /* @noEscape */ $block->getChildHtml('product.info.addtowishlist'); ?>
-                <?= /* @noEscape */ $block->getChildHtml('product.info.addtocompare'); ?>
-                <?= /* @noEscape */ $block->getChildHtml('product.info.emailtofriend'); ?>
-                <?= /* @noEscape */ $block->getChildHtml('product.info.additional.actions'); ?>
-            </div>
-
+        <div role="group" aria-label="<?= $escaper->escapeHtmlAttr('Price') ?>">
+            <?= $block->getChildHtml("product.info.price") ?>
         </div>
 
-        <div class="mt-sticky flex-wrap sm:flex-nowrap flex mt-4 ml-auto sm:mt-0 gap-4 mt-3">
+        <div class="flex mt-4 ml-auto sm:mt-0">
             <?php if ($product->isSaleable()): ?>
-                <?= /* @noEscape */ $block->getChildHtml("product.info.quantity") ?>
-                <?= /* @noEscape */ $block->getChildHtml("product.info.addtocart") ?>
+                <?= $block->getChildHtml("product.info.quantity") ?>
+                <?= $block->getChildHtml("product.info.addtocart") ?>
             <?php endif; ?>
         </div>
-    <div class="border-b mt-6"></div>
 
+    </div>
 
-<div  class="pdp-static-block mt-6">
-   <?= /* @noEscape */ $block->getLayout()
-    ->createBlock(\Magento\Cms\Block\Block::class)
-    ->setBlockId('product-detail-information-block')
-    ->toHtml(); ?>
-</div>
-
-
-
-    <div class="border-b mt-6"></div>
-
-
-
-    <?php if ($product->isSaleable()): ?>
+    <?php if ($product->isSaleable() && $block->getChildHtml('addtocart.shortcut.buttons')): ?>
         <div class="flex mt-4 justify-end">
-            <?= /* @noEscape */ $block->getChildHtml('addtocart.shortcut.buttons') ?>
+            <?= $block->getChildHtml('addtocart.shortcut.buttons') ?>
         </div>
     <?php endif; ?>
 
-    
+    <?php if ($additionalActions = $block->getChildHtml('product.info.additional.actions')): ?>
+        <div class="flex mt-4 justify-end">
+            <?= /** @noEscape */ $additionalActions; ?>
+        </div>
+    <?php endif; ?>
 
     <?php if ($tierPriceBlock = $block->getChildHtml("product.price.tier")): ?>
         <div class="py-4 my-2 tier-price-container">
-            <?= /* @noEscape */ /** @noEscape */ $tierPriceBlock ?>
+            <?= /** @noEscape */ $tierPriceBlock ?>
         </div>
     <?php endif; ?>
 
-    <?= /* @noEscape */ $block->getChildHtml("product.info.additional") ?>
+    <?= $block->getChildHtml("product.info.additional") ?>
 </div>

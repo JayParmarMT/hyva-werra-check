@@ -31,9 +31,9 @@ $swatchItemBlock->setData('product_id', $productId);
 <?php if ($product->isSaleable() && count($attributes)): ?>
 
     <script>
-        function initConfigurableSwatchOptions_<?= /* @noEscape */ (int) $productId ?>() {
+        function initConfigurableSwatchOptions_<?= (int) $productId ?>() {
             const configurableOptionsComponent = initConfigurableOptions(
-                '<?= /* @noEscape */ (int) $productId ?>',
+                '<?= (int) $productId ?>',
                 <?= /* @noEscape */ $block->getJsonConfig() ?>
             );
             const swatchOptionsComponent = initSwatchOptions(<?= /* @noEscape */ $block->getJsonSwatchConfig() ?>);
@@ -42,7 +42,7 @@ $swatchItemBlock->setData('product_id', $productId);
                 configurableOptionsComponent,
                 swatchOptionsComponent,
                 {
-                    mediaCallback: "<?= /* @noEscape */ $escaper->escapeJs($escaper->escapeUrl($block->getMediaCallback())) ?>",
+                    mediaCallback: "<?= $escaper->escapeJs($escaper->escapeUrl($block->getMediaCallback())) ?>",
                     changeOption(optionId, value, skipUpdateGallery) {
                         if (value === '') {
                             this.selectedValues = this.removeAttrFromSelection(this.selectedValues, optionId)
@@ -56,6 +56,7 @@ $swatchItemBlock->setData('product_id', $productId);
 
                         const candidates = this.findProductIdsForPartialSelection(this.selectedValues);
 
+                        <?php /* The skuCandidates property is not set if the Magento_Inventory (MSI) modules are disabled. */ ?>
                         window.dispatchEvent(new CustomEvent('listing-configurable-selection-changed', {
                             detail: {
                                 productId: this.productId,
@@ -64,7 +65,7 @@ $swatchItemBlock->setData('product_id', $productId);
                                 productIndex: this.productIndex,
                                 selectedValues: this.selectedValues,
                                 candidates: candidates,
-                                skuCandidates: Object.values(candidates).map(id => this.optionConfig.sku[id]),
+                                skuCandidates: Object.values(candidates).map(id => this.optionConfig.sku?.[id] ?? null).filter(Boolean),
                             }
                         }));
                     },
@@ -88,12 +89,10 @@ $swatchItemBlock->setData('product_id', $productId);
                                 // non critical failure only console logged
                                 console.warn(data.errors);
                             } else {
-                                const image = data && data.medium;
-
-                                image && window.dispatchEvent(
+                                data && window.dispatchEvent(
                                     new CustomEvent(
-                                        "update-gallery-<?= /* @noEscape */ (int)$productId ?>",
-                                        {detail: image}
+                                        "update-gallery-<?= (int)$productId ?>",
+                                        { detail: data }
                                     )
                                 );
                             }
@@ -163,9 +162,9 @@ $swatchItemBlock->setData('product_id', $productId);
 
     </script>
 
-<div x-data="initConfigurableSwatchOptions_<?= /* @noEscape */ (int) $productId ?>()"
+<div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>()"
      x-defer="intersect"
-     x-init="findAllowedAttributeOptions(); initShowSwatchesIntersect();"
+     x-init="findAllowedAttributeOptions()"
      @private-content-loaded.window="onGetCartData($event.detail.data)"
      @resize.window="resizeEvent()"
      class="mb-2 relative"
@@ -178,24 +177,22 @@ $swatchItemBlock->setData('product_id', $productId);
             <?php if (!$productAttribute->getUsedInProductListing() || !$swatchRendererViewModel->isSwatchAttribute($productAttribute)) {
                 continue;
             } ?>
-        <div class="swatch-attribute border-t-2 last:border-b-2 border-container
-            swatch-<?= /* @noEscape */ $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
+        <div class="swatch-attribute border-t last:border-b border-container
+            <?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
         >
-            <div class="swatch-listing w-full overflow-x-hidden swatch-attribute-options min-h-14">
-                <template x-if="showSwatches">
-                    <div class="flex flex-nowrap w-full overflow-auto snap items-center py-1"
-                        id="attribute-label-<?= /* @noEscape */ $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
-                        role="radiogroup"
-                        x-bind="scrollEvents"
-                        aria-label="<?= /* @noEscape */ $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
+            <div class="w-full overflow-x-hidden swatch-attribute-options min-h-14">
+                <div class="flex flex-nowrap w-full overflow-auto snap items-center py-1"
+                    id="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
+                    role="radiogroup"
+                    x-bind="scrollEvents"
+                    aria-label="<?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
+                >
+                    <template x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
+                              :key="item.id"
                     >
-                        <template x-for="(item, index) in optionConfig.attributes[<?= /* @noEscape */ (int) $attributeId ?>].options"
-                                  :key="item.id"
-                        >
-                            <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
-                        </template>
-                    </div>
-                </template>
+                        <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
+                    </template>
+                </div>
             </div>
         </div>
         <?php endforeach; ?>

@@ -1,9 +1,8 @@
 <?php
 /**
  * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -20,7 +19,6 @@ use Hyva\Theme\ViewModel\ProductPage;
 
 /** @var ProductPage $productViewModel */
 $productViewModel = $viewModels->require(ProductPage::class);
-
 /** @var Product $product */
 $product = $productViewModel->getProduct();
 
@@ -28,10 +26,9 @@ if (!$product->getDescription()) {
     return;
 }
 
-$cssClasses = $block->getData('css_classes')
-    ?? 'px-8 lg:px-0 prose prose-slate max-w-full prose-h2:text-xl prose-h3:text-lg prose-h4:text-base prose-headings:first:mt-0';
-?>
+$cssClasses = $block->getData('css_classes') ?? 'prose';
 
-<div class="<?= /* @noEscape */ $escaper->escapeHtmlAttr($cssClasses) ?> text-th-primary-darker">
-    <?= /* @noEscape */ $productViewModel->productAttributeHtml($product, $product->getDescription(), 'description') ?>
+?>
+<div class="<?= $escaper->escapeHtmlAttr($cssClasses) ?>">
+    <?= $productViewModel->productAttributeHtml($product, $product->getDescription(), 'description') ?>
 </div>
